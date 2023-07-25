@@ -4,7 +4,6 @@ import com.hthk.fintech.log.utils.LogUtils;
 import com.hthk.fintech.model.event.IEvent;
 import com.hthk.fintech.service.EventService;
 import com.hthk.fintech.service.basic.AbstractService;
-import com.hthk.fintech.structure.utils.JacksonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,10 +20,6 @@ public class EventServiceDefaultImpl extends AbstractService implements EventSer
 
         logger.info(LogUtils.wrapStr(KW_SAVE_EVENT), ymlStr(event));
 
-    }
-
-    protected String ymlStr(IEvent event) {
-        return JacksonUtils.toYMLPrettyTry(event);
     }
 
 }
