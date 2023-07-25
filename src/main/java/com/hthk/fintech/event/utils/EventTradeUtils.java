@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 public class EventTradeUtils extends AbstractEventUtils {
 
     public static EventTrade build(String domain, EventTypeTradeEnum eventTypeTrade, LocalDateTime eventTime) {
-
         return new EventTrade(domain, eventTypeTrade, eventTime);
     }
 
