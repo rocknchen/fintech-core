@@ -19,7 +19,7 @@ public class EventServiceDefaultImpl extends AbstractService implements EventSer
     public void save(IEvent event) {
 
         logger.info(LogUtils.wrapStr(KW_SAVE_EVENT), ymlStr(event));
-        
+
     }
 
 }
