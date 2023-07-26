@@ -15,11 +15,13 @@ public class EventServiceDefaultImpl extends AbstractService implements EventSer
 
     private final static Logger logger = LoggerFactory.getLogger(EventServiceDefaultImpl.class);
 
+//    private EventDAO dao;
+
     @Override
     public void save(IEvent event) {
 
         logger.info(LogUtils.wrapStr(KW_SAVE_EVENT), ymlStr(event));
-
+//        dao.save(event);
     }
 
 }
