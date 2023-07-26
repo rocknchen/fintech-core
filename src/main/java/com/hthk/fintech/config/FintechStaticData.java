@@ -8,4 +8,6 @@ public class FintechStaticData {
 
     public static final String KW_SAVE_EVENT = "SAVE EVENT";
 
+    public static final String LOG_FORMAT_ONE_MODEL = "{}: {}";
+
 }
