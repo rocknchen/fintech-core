@@ -1,4 +1,4 @@
-package com.hthk.fintech.service.basic;
+package com.hthk.fintech.event.service.basic;
 
 import com.hthk.fintech.structure.utils.JacksonUtils;
 

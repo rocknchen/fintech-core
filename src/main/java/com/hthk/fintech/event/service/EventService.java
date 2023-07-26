@@ -1,4 +1,4 @@
-package com.hthk.fintech.service;
+package com.hthk.fintech.event.service;
 
 import com.hthk.fintech.model.event.IEvent;
 
