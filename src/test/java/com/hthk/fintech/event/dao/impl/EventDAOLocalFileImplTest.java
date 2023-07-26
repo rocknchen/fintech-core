@@ -14,7 +14,7 @@ public class EventDAOLocalFileImplTest extends EventTradeTest {
 
         EventTypeTradeEnum type = EventTypeTradeEnum.REFRESH;
 
-//        event = EventTrade.newInstance(DOMAIN, type, currentTime);
+        event = EventTrade.newInstance(DOMAIN, type, currentTime);
         logYML(event);
     }
 
