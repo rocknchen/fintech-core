@@ -4,7 +4,7 @@ import com.hthk.fintech.event.dao.EventDAO;
 import com.hthk.fintech.log.utils.LogUtils;
 import com.hthk.fintech.model.event.IEvent;
 import com.hthk.fintech.event.service.EventService;
-import com.hthk.fintech.event.service.basic.AbstractService;
+import com.hthk.fintech.service.basic.AbstractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

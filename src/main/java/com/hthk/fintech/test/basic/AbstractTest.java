@@ -4,14 +4,24 @@ import com.hthk.fintech.structure.utils.JacksonUtils;
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.time.LocalDateTime;
 
+import static com.hthk.fintech.config.FintechStaticData.DEFAULT_APP_CONTEXT_FILE;
+
 public abstract class AbstractTest {
+
+    protected static ApplicationContext appContext;
 
     protected Logger logger;
 
     protected LocalDateTime currentTime;
+
+    static {
+        appContext = new ClassPathXmlApplicationContext(DEFAULT_APP_CONTEXT_FILE);
+    }
 
     @Before
     public void setUp() {

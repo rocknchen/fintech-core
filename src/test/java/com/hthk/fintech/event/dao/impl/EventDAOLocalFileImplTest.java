@@ -1,21 +1,39 @@
 package com.hthk.fintech.event.dao.impl;
 
-import com.hthk.fintech.enumration.EventTypeTradeEnum;
+import com.hthk.fintech.event.dao.EventDAO;
+import com.hthk.fintech.exception.PersistenceException;
 import com.hthk.fintech.model.event.EventTrade;
 import com.hthk.fintech.test.EventTradeTest;
 import org.junit.Test;
 
+import static com.hthk.fintech.enumration.EventTypeTradeEnum.REFRESH;
+
 public class EventDAOLocalFileImplTest extends EventTradeTest {
 
-    private final String DOMAIN = "CALYPSO";
+    final String DOMAIN = "CALYPSO";
+
+    EventDAO dao;
+
+    @Override
+    public void setUp() {
+        super.setUp();
+        dao = appContext.getBean(EventDAO.class);
+    }
 
     @Test
-    public void testSaveEvent_TRADE_REFRESH_CALYPSO() {
+    public void testSaveEvent_TRADE_REFRESH_CALYPSO() throws PersistenceException {
 
-        EventTypeTradeEnum type = EventTypeTradeEnum.REFRESH;
-
-        event = EventTrade.newInstance(DOMAIN, type, currentTime);
+        event = EventTrade.newInstance(DOMAIN, REFRESH, currentTime);
         logYML(event);
+        dao.save(event);
+    }
+
+    //    @Test
+    public void testSaveEvent_TRADE_REFRESH_CALYPSO2() {
+
+        event = EventTrade.newInstance(DOMAIN, REFRESH, currentTime);
+        logYML(event);
+//        dao.save(event);
     }
 
 }
