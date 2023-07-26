@@ -1,6 +1,7 @@
 package com.hthk.fintech.event.dao.impl;
 
 import com.hthk.fintech.event.dao.EventDAO;
+import com.hthk.fintech.exception.AttributeEmptyException;
 import com.hthk.fintech.exception.PersistenceException;
 import com.hthk.fintech.model.event.EventTrade;
 import com.hthk.fintech.test.EventTradeTest;
@@ -21,7 +22,7 @@ public class EventDAOLocalFileImplTest extends EventTradeTest {
     }
 
     @Test
-    public void testSaveEvent_TRADE_REFRESH_CALYPSO() throws PersistenceException {
+    public void testSaveEvent_TRADE_REFRESH_CALYPSO() throws PersistenceException, AttributeEmptyException {
 
         event = EventTrade.newInstance(DOMAIN, REFRESH, currentTime);
         logYML(event);
