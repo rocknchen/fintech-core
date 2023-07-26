@@ -12,6 +12,8 @@ public class FintechStaticData {
 
     public static final String KW_EVENT_TIME = "EVENT TIME";
 
+    public static final String KW_DATE_MONTH = "DATE MONTH";
+
     public static final String LOG_FORMAT_ONE_MODEL = "{}: {}";
 
 }

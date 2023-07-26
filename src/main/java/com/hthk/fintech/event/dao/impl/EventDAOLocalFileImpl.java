@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+import static com.hthk.fintech.config.FintechStaticData.KW_DATE_MONTH;
 import static com.hthk.fintech.config.FintechStaticData.KW_EVENT_TIME;
 
 @Component
@@ -21,6 +22,7 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         logTime(eventTime, KW_EVENT_TIME);
 
         String monthStr = LocalDateTimeUtils.format("yyyyMM", eventTime);
+        logStr(monthStr, KW_DATE_MONTH);
 //        logYML();
 //        File eventFile =
     }

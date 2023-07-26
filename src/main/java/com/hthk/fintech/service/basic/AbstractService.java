@@ -26,7 +26,12 @@ public abstract class AbstractService {
     }
 
     protected <T> void logStr(T model) {
-        getLogger().info("{}", model);
+        logStr(model, null);
+    }
+
+    protected <T> void logStr(T model, String msg) {
+        String logMsg = StringUtils.hasText(msg) ? msg + ": {}" : "{}";
+        getLogger().info(logMsg, model);
     }
 
     protected void logTime(LocalDateTime time) {
