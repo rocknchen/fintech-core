@@ -23,7 +23,7 @@ public class EventDAOLocalFileImplTest extends EventTradeTest {
     @Test
     public void testSaveEvent_TRADE_REFRESH_CALYPSO() {
 
-//        event.set
+//        event
         logYML(event);
     }
 
