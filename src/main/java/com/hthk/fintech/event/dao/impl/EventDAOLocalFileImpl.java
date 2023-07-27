@@ -26,6 +26,8 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         String monthStr = LocalDateTimeUtils.format("yyyyMM", eventTime);
         logStr(monthStr, KW_DATE_MONTH);
 
+        DateTimeInfoDTO
+
         File eventFile = getEventFile(monthStr);
 //        logYML();
 //        File eventFile =
