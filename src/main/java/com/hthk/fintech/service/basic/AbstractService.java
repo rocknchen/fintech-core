@@ -28,7 +28,24 @@ public abstract class AbstractService {
     }
 
     protected <T> void logYML(T model) {
-        getLogger().info("\r\n{}", JacksonUtils.toYMLPrettyTry(model));
+        logYML(model, LogLevel.INFO, null);
+    }
+
+    protected <T> void logYML(T model, String msg) {
+        logStr(model, LogLevel.INFO, msg);
+    }
+
+    protected <T> void logYML(T model, LogLevel level, String msg) {
+        String logMsg = StringUtils.hasText(msg) ? msg + "\r\n{}" : "{}";
+        String yml = JacksonUtils.toYMLPrettyTry(model);
+        switch (level) {
+            case DEBUG:
+                getLogger().debug(logMsg, yml);
+                break;
+            default:
+                getLogger().info(logMsg, yml);
+                break;
+        }
     }
 
     protected <T> void logStr(T model) {

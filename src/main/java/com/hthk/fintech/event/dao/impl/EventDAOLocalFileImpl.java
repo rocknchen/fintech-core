@@ -12,7 +12,6 @@ import com.hthk.fintech.service.basic.AbstractService;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -24,6 +23,8 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
     @Override
     public void save(IEvent event) throws PersistenceException, AttributeEmptyException {
 
+        logYML(event, LogLevel.INFO, KW_SAVE_EVENT);
+
         LocalDateTime eventTime = event.getTime();
         logTime(eventTime, LogLevel.DEBUG, KW_EVENT_TIME);
 
@@ -33,13 +34,14 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         Map<String, String> dataMap = DateTimeFormatUtils.buildStrMap(eventTime);
         logStr(dataMap.toString(), LogLevel.DEBUG, null);
 
-        String eventFilePath = getEventFilePath(monthStr);
-        logStr(eventFilePath, LogLevel.DEBUG, null);
-//        logYML();
+        String eventFilePathMasked = getEventFilePathMasked();
+        logStr(eventFilePathMasked, LogLevel.DEBUG, "event file path masked");
+
+
 //        File eventFile =
     }
 
-    private String getEventFilePath(String monthStr) {
+    private String getEventFilePathMasked() {
 
         String rootFolder = appConfig.getLocalFileRootFolder();
         logStr(rootFolder, LogLevel.DEBUG, null);

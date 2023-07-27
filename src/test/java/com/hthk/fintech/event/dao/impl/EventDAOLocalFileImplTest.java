@@ -25,7 +25,6 @@ public class EventDAOLocalFileImplTest extends EventTradeTest {
     public void testSaveEvent_TRADE_REFRESH_CALYPSO() throws PersistenceException, AttributeEmptyException {
 
         event = EventTrade.newInstance(DOMAIN, REFRESH, currentTime);
-        logYML(event);
         dao.save(event);
     }
 
