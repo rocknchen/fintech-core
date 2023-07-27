@@ -12,8 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.time.LocalDateTime;
 
-import static com.hthk.fintech.config.FintechStaticData.KW_DATE_MONTH;
-import static com.hthk.fintech.config.FintechStaticData.KW_EVENT_TIME;
+import static com.hthk.fintech.config.FintechStaticData.*;
 
 @Component
 public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
@@ -34,16 +33,26 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
 
     private File getEventFile(String monthStr) {
 
-        String eventFileFolder = appConfig.getLocalFileRootFolder();
-        logStr(eventFileFolder, LogLevel.DEBUG, null);
+        String rootFolder = appConfig.getLocalFileRootFolder();
+        logStr(rootFolder, LogLevel.DEBUG, null);
 
-        String eventFileName = null;
-        logStr(eventFileName, LogLevel.DEBUG, null);
+        String eventSubFolderMasked = appConfig.getEventFolder();
+        logStr(eventSubFolderMasked, LogLevel.DEBUG, null);
 
-        String eventFilePath = eventFileFolder + "/" + eventFileName;
-        logStr(eventFilePath, LogLevel.DEBUG, null);
+        String eventFileFolderMasked = rootFolder + "/" + eventSubFolderMasked;
+        logStr(eventFileFolderMasked, LogLevel.DEBUG, null);
+
+        String eventFileName = KW_EVENT_FILE_NAME;
+        String eventFullPathMasked = eventFileFolderMasked + "/" + eventFileName;
+
+        String eventFullPath = dateUnMask(eventFullPathMasked);
+        logStr(eventFullPath, LogLevel.DEBUG, null);
 
         return null;
+    }
+
+    private String dateUnMask(String dateMaskedStr) {
+        return dateMaskedStr;
     }
 
 }

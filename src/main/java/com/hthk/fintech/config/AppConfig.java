@@ -13,8 +13,14 @@ public class AppConfig {
     @Value("${local.file.root}")
     private String localFileRootFolder;
 
+    @Value("${event.folder}")
+    private String eventFolder;
+
     public String getLocalFileRootFolder() {
         return localFileRootFolder;
     }
 
+    public String getEventFolder() {
+        return eventFolder;
+    }
 }
