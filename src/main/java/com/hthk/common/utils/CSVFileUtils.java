@@ -4,7 +4,6 @@ import com.csvreader.CsvWriter;
 import com.hthk.fintech.converter.AttributeStringConverter;
 import com.hthk.fintech.enumration.CSVField;
 import com.hthk.fintech.enumration.FieldOrder;
-import com.hthk.fintech.enumration.RecordAppendModeEnum;
 import com.hthk.fintech.model.file.csv.CSVFieldDTO;
 import org.apache.commons.collections.map.HashedMap;
 
@@ -23,19 +22,23 @@ import static com.hthk.fintech.config.FintechStaticData.KW_GET;
 
 public class CSVFileUtils {
 
-    public static <T> void write(T dto, String outputFile, boolean force, RecordAppendModeEnum appendMode) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        write(Arrays.asList(dto), outputFile, force, appendMode);
+    public static <T> void write(T dto, String outputFile, boolean force, Class<?> clz) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        write(Arrays.asList(dto), outputFile, force, clz);
     }
 
-    public static void write(List<?> dtoList, String outputFile, boolean force, RecordAppendModeEnum appendMode) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public static <T> void write(T dto, String outputFile, boolean force) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        write(Arrays.asList(dto), outputFile, force, null);
+    }
+
+    public static void write(List<?> dtoList, String outputFile, boolean force, Class<?> clz) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         if (force) {
             new File(outputFile).getParentFile().mkdirs();
         }
-        write(dtoList, outputFile, appendMode);
+        write(dtoList, outputFile, clz);
     }
 
-    public static void write(List<?> dtoList, String outputFile, RecordAppendModeEnum appendMode) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public static void write(List<?> dtoList, String outputFile, Class<?> clz) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         if (dtoList == null || dtoList.size() == 0) {
             return;
@@ -43,21 +46,32 @@ public class CSVFileUtils {
 
         new File(outputFile).getParentFile().mkdirs();
 
-        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile, false));
-        CsvWriter writer = new CsvWriter(bw, ',');
+        CsvWriter writer = null;
+        try {
 
-        List<String> fieldList = getFieldList(dtoList);
-        Map<String, CSVFieldDTO> csvFieldDTOMap = convert(dtoList.get(0));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile, false));
+            writer = new CsvWriter(bw, ',');
 
-        List<String> headerStrList = buildHeaderStrList(fieldList, csvFieldDTOMap);
-        List<List<String>> contentList = buildContentList(fieldList, csvFieldDTOMap, dtoList);
+            Class<?> modelClz = clz == null ? dtoList.get(0).getClass() : clz;
 
-        writer.writeRecord(CustomCollectionUtils.toArrayStr(headerStrList), false);
-        for (int i = 0; i < contentList.size(); i++) {
-            writer.writeRecord(CustomCollectionUtils.toArrayStr(contentList.get(i)), false);
+            List<String> fieldList = getFieldList(modelClz);
+            Map<String, CSVFieldDTO> csvFieldDTOMap = convert(modelClz);
+
+            List<String> headerStrList = buildHeaderStrList(fieldList, csvFieldDTOMap);
+            List<List<String>> contentList = buildContentList(fieldList, csvFieldDTOMap, dtoList);
+
+            writer.writeRecord(CustomCollectionUtils.toArrayStr(headerStrList), false);
+            for (int i = 0; i < contentList.size(); i++) {
+                writer.writeRecord(CustomCollectionUtils.toArrayStr(contentList.get(i)), false);
+            }
+
+            writer.close();
+
+        } catch (Throwable e) {
+            writer.close();
+            new File(outputFile).deleteOnExit();
+            throw e;
         }
-
-        writer.close();
     }
 
     private static List<String> buildHeaderStrList(List<String> fieldList, Map<String, CSVFieldDTO> csvFieldDTOMap) {
@@ -82,10 +96,9 @@ public class CSVFileUtils {
         }).collect(Collectors.toList());
     }
 
-    private static <T> Map<String, CSVFieldDTO> convert(T model) throws NoSuchMethodException {
+    private static <T> Map<String, CSVFieldDTO> convert(Class<?> modelClz) throws NoSuchMethodException {
 
         Map<String, CSVFieldDTO> csvFieldDTOMap = new HashedMap();
-        Class<?> modelClz = model.getClass();
         FieldOrder order = modelClz.getAnnotation(FieldOrder.class);
         List<String> orderList = CustomCollectionUtils.toList(order.value());
         for (int i = 0; i < orderList.size(); i++) {
@@ -106,10 +119,9 @@ public class CSVFileUtils {
         return new CSVFieldDTO(fieldName, header, getMethod, converterClz);
     }
 
-    private static List<String> getFieldList(List<?> dtoList) {
+    private static List<String> getFieldList(Class<?> modelClz) {
 
-        Object obj = dtoList.get(0);
-        FieldOrder order = obj.getClass().getAnnotation(FieldOrder.class);
+        FieldOrder order = modelClz.getAnnotation(FieldOrder.class);
         List<String> orderList = CustomCollectionUtils.toList(order.value());
         return orderList;
     }

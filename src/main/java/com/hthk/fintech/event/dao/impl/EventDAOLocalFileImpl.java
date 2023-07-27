@@ -3,7 +3,6 @@ package com.hthk.fintech.event.dao.impl;
 import com.hthk.common.utils.CSVFileUtils;
 import com.hthk.common.utils.LocalDateTimeUtils;
 import com.hthk.fintech.enumration.DateTimeFormatEnum;
-import com.hthk.fintech.enumration.RecordAppendModeEnum;
 import com.hthk.fintech.event.dao.EventDAO;
 import com.hthk.fintech.event.utils.DateTimeFormatUtils;
 import com.hthk.fintech.event.utils.DateTimeMaskUtils;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import static com.hthk.fintech.config.FintechStaticData.*;
@@ -51,8 +51,30 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         boolean isNewEventFile = !new File(eventFilePath).exists();
         logStr(Boolean.valueOf(isNewEventFile).toString(), LogLevel.DEBUG, "is new event file");
 
+        if (isNewEventFile) {
+            createCSV(event, eventFilePath);
+        } else {
+            List<IEvent> eventList = readCSV(eventFilePath);
+            eventList.add(0, event);
+            writeCSV(eventList, eventFilePath);
+        }
+    }
+
+    private List<IEvent> readCSV(String eventFilePath) {
+        return null;
+    }
+
+    private void writeCSV(List<IEvent> eventList, String eventFilePath) throws PersistenceException {
         try {
-            CSVFileUtils.write(event, eventFilePath, true, RecordAppendModeEnum.INSERT);
+            CSVFileUtils.write(eventList, eventFilePath, true);
+        } catch (Exception e) {
+            throw new PersistenceException(e.getMessage(), e);
+        }
+    }
+
+    private void createCSV(IEvent event, String eventFilePath) throws PersistenceException {
+        try {
+            CSVFileUtils.write(event, eventFilePath, true, IEvent.class);
         } catch (Exception e) {
             throw new PersistenceException(e.getMessage(), e);
         }
