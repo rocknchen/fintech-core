@@ -2,7 +2,6 @@ package com.hthk.common.utils;
 
 import com.csvreader.CsvWriter;
 import com.hthk.fintech.enumration.CSVField;
-import org.apache.commons.collections.map.HashedMap;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -54,30 +53,30 @@ public class CSVFileUtils {
     }
 
 
-    public static void write(List<?> dtoList, String outputFile) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-
-        if (dtoList == null || dtoList.size() == 0) {
-            return;
-        }
-
-        new File(outputFile).getParentFile().mkdirs();
-
-        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile, false));
-        CsvWriter writer = new CsvWriter(bw, ',');
-
-        List<Field> fieldList = getFieldList(dtoList);
-        List<CSVField> csvFieldAnnoList = getCSVFieldAnnoList(fieldList);
-        List<Method> methodList = getMethodList(dtoList.get(0), fieldList);
-        List<String> headerStrList = buildHeaderStrList(dtoList, csvFieldAnnoList);
-        List<List<String>> contentList = buildContentList(dtoList, fieldList, methodList);
-
-        writer.writeRecord(CustomCollectionUtils.toArrayStr(headerStrList), false);
-        for (int i = 0; i < contentList.size(); i++) {
-            writer.writeRecord(CustomCollectionUtils.toArrayStr(contentList.get(i)), false);
-        }
-
-        writer.close();
-    }
+//    public static void write(List<?> dtoList, String outputFile) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+//
+//        if (dtoList == null || dtoList.size() == 0) {
+//            return;
+//        }
+//
+//        new File(outputFile).getParentFile().mkdirs();
+//
+//        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile, false));
+//        CsvWriter writer = new CsvWriter(bw, ',');
+//
+//        List<Field> fieldList = getFieldList(dtoList);
+//        List<CSVField> csvFieldAnnoList = getCSVFieldAnnoList(fieldList);
+//        List<Method> methodList = getMethodList(dtoList.get(0), fieldList);
+//        List<String> headerStrList = buildHeaderStrList(dtoList, csvFieldAnnoList);
+//        List<List<String>> contentList = buildContentList(dtoList, fieldList, methodList);
+//
+//        writer.writeRecord(CustomCollectionUtils.toArrayStr(headerStrList), false);
+//        for (int i = 0; i < contentList.size(); i++) {
+//            writer.writeRecord(CustomCollectionUtils.toArrayStr(contentList.get(i)), false);
+//        }
+//
+//        writer.close();
+//    }
 
     public static List<Method> getMethodList(Object obj, List<Field> fieldList) throws NoSuchMethodException {
 

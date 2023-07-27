@@ -1,5 +1,6 @@
 package com.hthk.common.utils;
 
+import com.hthk.fintech.exception.ServiceException;
 import org.springframework.util.CollectionUtils;
 
 import javax.sql.rowset.serial.SerialException;

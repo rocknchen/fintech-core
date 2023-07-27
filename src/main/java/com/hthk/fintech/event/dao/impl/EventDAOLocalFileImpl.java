@@ -45,8 +45,13 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         File parentPath = eventFile.getParentFile();
 
         buildFolder(parentPath);
+        appendCSV(event, eventFile);
+    }
 
-//        File eventFile =
+    private void appendCSV(IEvent event, File eventFile) {
+
+        boolean isNewEventFile = !eventFile.exists();
+        logStr(Boolean.valueOf(isNewEventFile).toString(), LogLevel.DEBUG, "is new event file");
     }
 
     private void buildFolder(File parentPath) {
