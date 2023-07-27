@@ -16,6 +16,6 @@ public class FintechStaticData {
 
     public static final String LOG_FORMAT_ONE_MODEL = "{}: {}";
 
-    public static final String KW_EVENT_FILE_NAME = "event_yyyyMMdd.csv";
+    public static final String KW_EVENT_FILE_NAME = "event_#yyyyMMdd#.csv";
 
 }

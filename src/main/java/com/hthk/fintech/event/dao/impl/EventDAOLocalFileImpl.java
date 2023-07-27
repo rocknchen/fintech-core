@@ -31,12 +31,14 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         String monthStr = LocalDateTimeUtils.format(DateTimeFormatEnum.YYYYMM.getFormat(), eventTime);
         logStr(monthStr, LogLevel.DEBUG, KW_DATE_MONTH);
 
-        Map<String, String> dataMap = DateTimeFormatUtils.buildStrMap(eventTime);
-        logStr(dataMap.toString(), LogLevel.DEBUG, null);
-
         String eventFilePathMasked = getEventFilePathMasked();
         logStr(eventFilePathMasked, LogLevel.DEBUG, "event file path masked");
 
+        Map<String, String> dataMap = DateTimeFormatUtils.buildStrMap(eventTime);
+        logStr(dataMap.toString(), LogLevel.DEBUG, null);
+
+        String eventFilePath = DateTimeMaskUtils.unMask(eventFilePathMasked, dataMap);
+        logStr(eventFilePath, LogLevel.DEBUG, "event file path");
 
 //        File eventFile =
     }
@@ -54,13 +56,7 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
 
         String eventFileName = KW_EVENT_FILE_NAME;
         String eventFullPathMasked = eventFileFolderMasked + "/" + eventFileName;
-
-        String eventFullPath = dateUnMask(eventFullPathMasked);
-        return eventFullPath;
-    }
-
-    private String dateUnMask(String dateMaskedStr) {
-        return DateTimeMaskUtils.unMask(dateMaskedStr);
+        return eventFullPathMasked;
     }
 
 }
