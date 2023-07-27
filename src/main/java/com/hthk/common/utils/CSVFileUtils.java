@@ -4,6 +4,7 @@ import com.csvreader.CsvWriter;
 import com.hthk.fintech.enumration.CSVField;
 import com.hthk.fintech.enumration.FieldOrder;
 import com.hthk.fintech.enumration.RecordAppendModeEnum;
+import com.hthk.fintech.model.file.csv.CSVFieldDTO;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -44,7 +45,7 @@ public class CSVFileUtils {
         CsvWriter writer = new CsvWriter(bw, ',');
 
         List<String> fieldList = getFieldList(dtoList);
-        Map<String, CSVFieldDTO>
+        Map<String, CSVFieldDTO> csvFieldDTOMap = convert(dtoList.get(0));
 
         List<CSVField> csvFieldAnnoList = getCSVFieldAnnoList(fieldList);
         List<Method> methodList = getMethodList(dtoList.get(0), fieldList);
@@ -57,6 +58,13 @@ public class CSVFileUtils {
         }
 
         writer.close();
+    }
+
+    private static <T> Map<String, CSVFieldDTO> convert(T model) {
+
+        FieldOrder order = model.getClass().getAnnotation(FieldOrder.class);
+        List<String> orderList = CustomCollectionUtils.toList(order.value());
+        return null;
     }
 
     public static <T> List<List<String>> convertInfo(List<T> tradeList, List<Map<String, Method>> headerList) {
