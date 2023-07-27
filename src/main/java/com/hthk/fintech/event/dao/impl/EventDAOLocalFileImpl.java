@@ -12,6 +12,7 @@ import com.hthk.fintech.service.basic.AbstractService;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -40,7 +41,18 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         String eventFilePath = DateTimeMaskUtils.unMask(eventFilePathMasked, dataMap);
         logStr(eventFilePath, LogLevel.DEBUG, "event file path");
 
+        File eventFile = new File(eventFilePath);
+        File parentPath = eventFile.getParentFile();
+
+        buildFolder(parentPath);
+
 //        File eventFile =
+    }
+
+    private void buildFolder(File parentPath) {
+        if (!parentPath.exists()) {
+            parentPath.mkdirs();
+        }
     }
 
     private String getEventFilePathMasked() {

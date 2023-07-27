@@ -15,7 +15,7 @@ public class DateTimeMaskUtils {
             String origKey = formatOrigKeyList.get(i);
             String key = formatAsMasked(origKey);
             String value = dataMap.get(origKey);
-            dateUnMasked = dataMaskedStr.replaceAll(key, value);
+            dateUnMasked = dateUnMasked.replaceAll(key, value);
         }
         return dateUnMasked;
     }
