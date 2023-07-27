@@ -33,4 +33,13 @@ public class DateTimeFormatUtils {
         });
         return dateTimeMap;
     }
+
+    public static Map<String, String> buildStrMap(LocalDateTime eventTime) {
+
+        Map<DateTimeFormatEnum, String> dateTimeMap = build(eventTime);
+        Map<String, String> dateTimeStrMap = new HashedMap();
+        dateTimeMap.forEach((k, v) -> dateTimeStrMap.put(k.getFormat(), v));
+        return dateTimeStrMap;
+    }
+
 }

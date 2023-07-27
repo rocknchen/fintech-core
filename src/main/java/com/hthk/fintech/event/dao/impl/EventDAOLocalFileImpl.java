@@ -4,6 +4,7 @@ import com.hthk.common.utils.LocalDateTimeUtils;
 import com.hthk.fintech.enumration.DateTimeFormatEnum;
 import com.hthk.fintech.event.dao.EventDAO;
 import com.hthk.fintech.event.utils.DateTimeFormatUtils;
+import com.hthk.fintech.event.utils.DateTimeMaskUtils;
 import com.hthk.fintech.exception.AttributeEmptyException;
 import com.hthk.fintech.exception.PersistenceException;
 import com.hthk.fintech.model.event.IEvent;
@@ -26,18 +27,19 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         LocalDateTime eventTime = event.getTime();
         logTime(eventTime, LogLevel.DEBUG, KW_EVENT_TIME);
 
-        String monthStr = LocalDateTimeUtils.format("yyyyMM", eventTime);
-        logStr(monthStr, KW_DATE_MONTH);
+        String monthStr = LocalDateTimeUtils.format(DateTimeFormatEnum.YYYYMM.getFormat(), eventTime);
+        logStr(monthStr, LogLevel.DEBUG, KW_DATE_MONTH);
 
-        Map<DateTimeFormatEnum, String> dataMap = DateTimeFormatUtils.build(eventTime);
+        Map<String, String> dataMap = DateTimeFormatUtils.buildStrMap(eventTime);
         logStr(dataMap.toString(), LogLevel.DEBUG, null);
 
-        File eventFile = getEventFile(monthStr);
+        String eventFilePath = getEventFilePath(monthStr);
+        logStr(eventFilePath, LogLevel.DEBUG, null);
 //        logYML();
 //        File eventFile =
     }
 
-    private File getEventFile(String monthStr) {
+    private String getEventFilePath(String monthStr) {
 
         String rootFolder = appConfig.getLocalFileRootFolder();
         logStr(rootFolder, LogLevel.DEBUG, null);
@@ -52,13 +54,11 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         String eventFullPathMasked = eventFileFolderMasked + "/" + eventFileName;
 
         String eventFullPath = dateUnMask(eventFullPathMasked);
-        logStr(eventFullPath, LogLevel.DEBUG, null);
-
-        return null;
+        return eventFullPath;
     }
 
     private String dateUnMask(String dateMaskedStr) {
-        return dateMaskedStr;
+        return DateTimeMaskUtils.unMask(dateMaskedStr);
     }
 
 }
