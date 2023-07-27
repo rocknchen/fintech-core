@@ -8,6 +8,7 @@ import com.hthk.fintech.event.utils.DateTimeFormatUtils;
 import com.hthk.fintech.event.utils.DateTimeMaskUtils;
 import com.hthk.fintech.exception.AttributeEmptyException;
 import com.hthk.fintech.exception.PersistenceException;
+import com.hthk.fintech.model.event.EventCriteria;
 import com.hthk.fintech.model.event.IEvent;
 import com.hthk.fintech.service.basic.AbstractService;
 import org.springframework.boot.logging.LogLevel;
@@ -43,10 +44,15 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         String eventFilePath = DateTimeMaskUtils.unMask(eventFilePathMasked, dataMap);
         logStr(eventFilePath, LogLevel.DEBUG, "event file path");
 
-        appendCSV(event, eventFilePath);
+        appendCSV(event, eventFilePath, eventTime);
     }
 
-    private void appendCSV(IEvent event, String eventFilePath) throws PersistenceException {
+    @Override
+    public List<IEvent> get(EventCriteria criteria) {
+        return null;
+    }
+
+    private void appendCSV(IEvent event, String eventFilePath, LocalDateTime eventTime) throws PersistenceException {
 
         boolean isNewEventFile = !new File(eventFilePath).exists();
         logStr(Boolean.valueOf(isNewEventFile).toString(), LogLevel.DEBUG, "is new event file");
@@ -54,13 +60,15 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         if (isNewEventFile) {
             createCSV(event, eventFilePath);
         } else {
-            List<IEvent> eventList = readCSV(eventFilePath);
+            List<IEvent> eventList = readCSV(eventFilePath, eventTime);
             eventList.add(0, event);
             writeCSV(eventList, eventFilePath);
         }
     }
 
-    private List<IEvent> readCSV(String eventFilePath) {
+    private List<IEvent> readCSV(String eventFilePath, LocalDateTime eventTime) {
+
+        EventCriteria criteria = new EventCriteria();
         return null;
     }
 
