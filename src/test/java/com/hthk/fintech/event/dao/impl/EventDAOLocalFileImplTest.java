@@ -1,6 +1,5 @@
 package com.hthk.fintech.event.dao.impl;
 
-import com.hthk.fintech.enumration.EventGroupEnum;
 import com.hthk.fintech.event.dao.EventDAO;
 import com.hthk.fintech.exception.AttributeEmptyException;
 import com.hthk.fintech.exception.PersistenceException;
