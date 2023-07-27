@@ -84,7 +84,7 @@ public class CSVFileUtils {
         Method getMethod = modelClz.getMethod(methodName);
         CSVField csvField = getMethod.getAnnotation(CSVField.class);
         String header = csvField.header();
-        Class<?> converterClz = csvField.converter();
+        Class<? extends AttributeStringConverter> converterClz = csvField.converter();
         new CSVFieldDTO(fieldName, header, getMethod, converterClz);
         return null;
     }
