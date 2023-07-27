@@ -18,4 +18,6 @@ public class FintechStaticData {
 
     public static final String KW_EVENT_FILE_NAME = "event_#yyyyMMdd#.csv";
 
+    public static final String KW_GET = "get";
+
 }
