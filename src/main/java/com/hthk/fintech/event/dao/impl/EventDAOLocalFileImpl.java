@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -57,12 +58,6 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
             CSVFileUtils.write(event, eventFilePath, true, true);
         } catch (Exception e) {
             throw new PersistenceException(e.getMessage(), e);
-        }
-    }
-
-    private void buildFolder(File parentPath) {
-        if (!parentPath.exists()) {
-            parentPath.mkdirs();
         }
     }
 
