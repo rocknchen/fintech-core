@@ -3,6 +3,7 @@ package com.hthk.common.utils;
 import com.csvreader.CsvWriter;
 import com.hthk.fintech.enumration.CSVField;
 import com.hthk.fintech.enumration.FieldOrder;
+import com.hthk.fintech.enumration.RecordAppendModeEnum;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,19 +20,19 @@ import java.util.stream.Collectors;
 
 public class CSVFileUtils {
 
-    public static <T> void write(T dto, String outputFile, boolean force, boolean append) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        write(Arrays.asList(dto), outputFile, force, append);
+    public static <T> void write(T dto, String outputFile, boolean force, RecordAppendModeEnum appendMode) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        write(Arrays.asList(dto), outputFile, force, appendMode);
     }
 
-    public static void write(List<?> dtoList, String outputFile, boolean force, boolean append) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public static void write(List<?> dtoList, String outputFile, boolean force, RecordAppendModeEnum appendMode) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         if (force) {
             new File(outputFile).getParentFile().mkdirs();
         }
-        write(dtoList, outputFile, append);
+        write(dtoList, outputFile, appendMode);
     }
 
-    public static void write(List<?> dtoList, String outputFile, boolean append) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public static void write(List<?> dtoList, String outputFile, RecordAppendModeEnum appendMode) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         if (dtoList == null || dtoList.size() == 0) {
             return;
@@ -43,6 +44,8 @@ public class CSVFileUtils {
         CsvWriter writer = new CsvWriter(bw, ',');
 
         List<String> fieldList = getFieldList(dtoList);
+        Map<String, CSVFieldDTO>
+
         List<CSVField> csvFieldAnnoList = getCSVFieldAnnoList(fieldList);
         List<Method> methodList = getMethodList(dtoList.get(0), fieldList);
         List<String> headerStrList = buildHeaderStrList(dtoList, csvFieldAnnoList);

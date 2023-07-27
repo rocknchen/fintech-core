@@ -3,6 +3,7 @@ package com.hthk.fintech.event.dao.impl;
 import com.hthk.common.utils.CSVFileUtils;
 import com.hthk.common.utils.LocalDateTimeUtils;
 import com.hthk.fintech.enumration.DateTimeFormatEnum;
+import com.hthk.fintech.enumration.RecordAppendModeEnum;
 import com.hthk.fintech.event.dao.EventDAO;
 import com.hthk.fintech.event.utils.DateTimeFormatUtils;
 import com.hthk.fintech.event.utils.DateTimeMaskUtils;
@@ -55,7 +56,7 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         logStr(Boolean.valueOf(isNewEventFile).toString(), LogLevel.DEBUG, "is new event file");
 
         try {
-            CSVFileUtils.write(event, eventFilePath, true, true);
+            CSVFileUtils.write(event, eventFilePath, true, RecordAppendModeEnum.INSERT);
         } catch (Exception e) {
             throw new PersistenceException(e.getMessage(), e);
         }
