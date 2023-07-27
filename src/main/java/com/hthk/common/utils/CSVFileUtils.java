@@ -2,6 +2,7 @@ package com.hthk.common.utils;
 
 import com.csvreader.CsvWriter;
 import com.hthk.fintech.enumration.CSVField;
+import com.hthk.fintech.enumration.FieldOrder;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,11 +12,49 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CSVFileUtils {
+
+    public static <T> void write(T dto, String outputFile, boolean force, boolean append) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        write(Arrays.asList(dto), outputFile, force, append);
+    }
+
+    public static void write(List<?> dtoList, String outputFile, boolean force, boolean append) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
+        if (force) {
+            new File(outputFile).getParentFile().mkdirs();
+        }
+        write(dtoList, outputFile, append);
+    }
+
+    public static void write(List<?> dtoList, String outputFile, boolean append) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
+        if (dtoList == null || dtoList.size() == 0) {
+            return;
+        }
+
+        new File(outputFile).getParentFile().mkdirs();
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile, false));
+        CsvWriter writer = new CsvWriter(bw, ',');
+
+        List<String> fieldList = getFieldList(dtoList);
+        List<CSVField> csvFieldAnnoList = getCSVFieldAnnoList(fieldList);
+        List<Method> methodList = getMethodList(dtoList.get(0), fieldList);
+        List<String> headerStrList = buildHeaderStrList(dtoList, csvFieldAnnoList);
+        List<List<String>> contentList = buildContentList(dtoList, fieldList, methodList);
+
+        writer.writeRecord(CustomCollectionUtils.toArrayStr(headerStrList), false);
+        for (int i = 0; i < contentList.size(); i++) {
+            writer.writeRecord(CustomCollectionUtils.toArrayStr(contentList.get(i)), false);
+        }
+
+        writer.close();
+    }
 
     public static <T> List<List<String>> convertInfo(List<T> tradeList, List<Map<String, Method>> headerList) {
         return tradeList.stream().map(t -> CSVFileUtils.convertSubInfo(t, headerList)).collect(Collectors.toList());
@@ -52,32 +91,6 @@ public class CSVFileUtils {
         writer.close();
     }
 
-
-//    public static void write(List<?> dtoList, String outputFile) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-//
-//        if (dtoList == null || dtoList.size() == 0) {
-//            return;
-//        }
-//
-//        new File(outputFile).getParentFile().mkdirs();
-//
-//        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile, false));
-//        CsvWriter writer = new CsvWriter(bw, ',');
-//
-//        List<Field> fieldList = getFieldList(dtoList);
-//        List<CSVField> csvFieldAnnoList = getCSVFieldAnnoList(fieldList);
-//        List<Method> methodList = getMethodList(dtoList.get(0), fieldList);
-//        List<String> headerStrList = buildHeaderStrList(dtoList, csvFieldAnnoList);
-//        List<List<String>> contentList = buildContentList(dtoList, fieldList, methodList);
-//
-//        writer.writeRecord(CustomCollectionUtils.toArrayStr(headerStrList), false);
-//        for (int i = 0; i < contentList.size(); i++) {
-//            writer.writeRecord(CustomCollectionUtils.toArrayStr(contentList.get(i)), false);
-//        }
-//
-//        writer.close();
-//    }
-
     public static List<Method> getMethodList(Object obj, List<Field> fieldList) throws NoSuchMethodException {
 
         List<Method> methodList = new ArrayList<>();
@@ -90,7 +103,7 @@ public class CSVFileUtils {
         return methodList;
     }
 
-    public static List<CSVField> getCSVFieldAnnoList(List<Field> fieldList) throws NoSuchFieldException {
+    public static List<CSVField> getCSVFieldAnnoList(List<String> fieldList) throws NoSuchFieldException {
 
         List<CSVField> fieldAnnoList = getFieldAnnoList(fieldList);
         return fieldAnnoList;
@@ -134,7 +147,7 @@ public class CSVFileUtils {
         return columnHeaderList;
     }
 
-    public static List<CSVField> getFieldAnnoList(List<Field> fieldList) {
+    public static List<CSVField> getFieldAnnoList(List<String> fieldList) {
 
         List<CSVField> fieldAnnoList = new ArrayList<>();
         for (int i = 0; i < fieldList.size(); i++) {
@@ -152,6 +165,14 @@ public class CSVFileUtils {
             fieldList.add(field);
         }
         return fieldList;
+    }
+
+    private static List<String> getFieldList(List<?> dtoList) {
+
+        Object obj = dtoList.get(0);
+        FieldOrder order = obj.getClass().getAnnotation(FieldOrder.class);
+        List<String> orderList = CustomCollectionUtils.toList(order.value());
+        return orderList;
     }
 
 }
