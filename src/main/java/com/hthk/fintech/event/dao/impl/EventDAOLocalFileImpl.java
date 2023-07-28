@@ -30,29 +30,37 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         logYML(event, LogLevel.INFO, KW_SAVE_EVENT);
 
         LocalDateTime eventTime = event.getTime();
-        logTime(eventTime, LogLevel.DEBUG, KW_EVENT_TIME);
-
-        String monthStr = LocalDateTimeUtils.format(DateTimeFormatEnum.YYYYMM.getFormat(), eventTime);
-        logStr(monthStr, LogLevel.DEBUG, KW_DATE_MONTH);
-
-        String eventFilePathMasked = getEventFilePathMasked();
-        logStr(eventFilePathMasked, LogLevel.DEBUG, "event file path masked");
-
-        Map<String, String> dataMap = DateTimeFormatUtils.buildStrMap(eventTime);
-        logStr(dataMap.toString(), LogLevel.DEBUG, null);
-
-        String eventFilePath = DateTimeMaskUtils.unMask(eventFilePathMasked, dataMap);
-        logStr(eventFilePath, LogLevel.DEBUG, "event file path");
-
+        String eventFilePath = getEventFilePath(eventTime);
         appendCSV(event, eventFilePath, eventTime);
     }
 
+    /**
+     * TODO
+     *
+     * @param criteria
+     * @return
+     */
     @Override
-    public List<IEvent> get(EventCriteria criteria) {
+    public List<IEvent> get(EventCriteria criteria) throws AttributeEmptyException {
+
+        LocalDateTime eventTime = criteria.getEventTime();
+        if (eventTime != null) {
+            return getByDate(eventTime);
+        } else {
+            List<IEvent> eventList = getAll();
+            return filter(eventList, criteria);
+        }
+    }
+
+    private List<IEvent> filter(List<IEvent> eventList, EventCriteria criteria) {
         return null;
     }
 
-    private void appendCSV(IEvent event, String eventFilePath, LocalDateTime eventTime) throws PersistenceException {
+    private List<IEvent> getAll() {
+        return null;
+    }
+
+    private void appendCSV(IEvent event, String eventFilePath, LocalDateTime eventTime) throws PersistenceException, AttributeEmptyException {
 
         boolean isNewEventFile = !new File(eventFilePath).exists();
         logStr(Boolean.valueOf(isNewEventFile).toString(), LogLevel.DEBUG, "is new event file");
@@ -60,16 +68,21 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         if (isNewEventFile) {
             createCSV(event, eventFilePath);
         } else {
-            List<IEvent> eventList = readCSV(eventFilePath, eventTime);
+            List<IEvent> eventList = getByDate(eventTime);
             eventList.add(0, event);
             writeCSV(eventList, eventFilePath);
         }
     }
 
-    private List<IEvent> readCSV(String eventFilePath, LocalDateTime eventTime) {
+    private List<IEvent> getByDate(LocalDateTime eventTime) throws AttributeEmptyException {
 
-        EventCriteria criteria = new EventCriteria();
-        return null;
+        String eventFilePath = getEventFilePath(eventTime);
+        List<IEvent> eventList = CSVFileUtils.read(eventFilePath, IEvent.class);
+        return get(criteria);
+    }
+
+    private File getEventFile(LocalDateTime eventTime) {
+
     }
 
     private void writeCSV(List<IEvent> eventList, String eventFilePath) throws PersistenceException {
@@ -104,4 +117,23 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         return eventFullPathMasked;
     }
 
+
+    private String getEventFilePath(LocalDateTime eventTime) throws AttributeEmptyException {
+
+        logTime(eventTime, LogLevel.DEBUG, KW_EVENT_TIME);
+
+        String monthStr = LocalDateTimeUtils.format(DateTimeFormatEnum.YYYYMM.getFormat(), eventTime);
+        logStr(monthStr, LogLevel.DEBUG, KW_DATE_MONTH);
+
+        String eventFilePathMasked = getEventFilePathMasked();
+        logStr(eventFilePathMasked, LogLevel.DEBUG, "event file path masked");
+
+        Map<String, String> dataMap = DateTimeFormatUtils.buildStrMap(eventTime);
+        logStr(dataMap.toString(), LogLevel.DEBUG, null);
+
+        String eventFilePath = DateTimeMaskUtils.unMask(eventFilePathMasked, dataMap);
+        logStr(eventFilePath, LogLevel.DEBUG, "event file path");
+
+        return eventFilePath;
+    }
 }

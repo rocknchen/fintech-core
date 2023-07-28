@@ -11,6 +11,6 @@ public interface EventDAO {
 
     void save(IEvent event) throws PersistenceException, AttributeEmptyException;
 
-    List<IEvent> get(EventCriteria criteria);
+    List<IEvent> get(EventCriteria criteria) throws AttributeEmptyException;
 
 }
