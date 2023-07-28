@@ -149,7 +149,6 @@ public class CSVFileUtils {
                 T model = EventUtils.deserialize(headerList, fieldList, clz);
                 modelList.add(model);
             }
-
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw e;
