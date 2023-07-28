@@ -83,7 +83,7 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
     }
 
     private File getEventFile(LocalDateTime eventTime) {
-
+        return null;
     }
 
     private void writeCSV(List<IEvent> eventList, String eventFilePath) throws PersistenceException {
