@@ -15,6 +15,7 @@ import org.springframework.boot.logging.LogLevel;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,11 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
 
         LocalDateTime eventTime = event.getTime();
         String eventFilePath = getEventFilePath(eventTime);
-        appendCSV(event, eventFilePath, eventTime);
+        try {
+            appendCSV(event, eventFilePath, eventTime);
+        } catch (IOException e) {
+            throw new PersistenceException(e.getMessage(), e);
+        }
     }
 
     /**
@@ -41,7 +46,7 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
      * @return
      */
     @Override
-    public List<IEvent> get(EventCriteria criteria) throws AttributeEmptyException {
+    public List<IEvent> get(EventCriteria criteria) throws AttributeEmptyException, IOException {
 
         LocalDateTime eventTime = criteria.getEventTime();
         if (eventTime != null) {
@@ -60,7 +65,7 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         return null;
     }
 
-    private void appendCSV(IEvent event, String eventFilePath, LocalDateTime eventTime) throws PersistenceException, AttributeEmptyException {
+    private void appendCSV(IEvent event, String eventFilePath, LocalDateTime eventTime) throws IOException, AttributeEmptyException {
 
         boolean isNewEventFile = !new File(eventFilePath).exists();
         logStr(Boolean.valueOf(isNewEventFile).toString(), LogLevel.DEBUG, "is new event file");
@@ -74,12 +79,11 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         }
     }
 
-    private List<IEvent> getByDate(LocalDateTime eventTime) throws AttributeEmptyException {
+    private List<IEvent> getByDate(LocalDateTime eventTime) throws AttributeEmptyException, IOException {
 
         String eventFilePath = getEventFilePath(eventTime);
-//        List<IEvent> eventList = CSVFileUtils.read(eventFilePath, IEvent.class);
-//        return get(criteria);
-        return null;
+        List<IEvent> eventList = CSVFileUtils.read(eventFilePath, IEvent.class);
+        return eventList;
     }
 
     private File getEventFile(LocalDateTime eventTime) {

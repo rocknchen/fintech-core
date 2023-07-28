@@ -1,16 +1,16 @@
 package com.hthk.common.utils;
 
+import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.hthk.fintech.converter.AttributeStringConverter;
 import com.hthk.fintech.enumration.CSVField;
 import com.hthk.fintech.enumration.FieldOrder;
 import com.hthk.fintech.model.file.csv.CSVFieldDTO;
 import org.apache.commons.collections.map.HashedMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 import static com.hthk.fintech.config.FintechStaticData.KW_GET;
 
 public class CSVFileUtils {
+
+    protected final static Logger logger = LoggerFactory.getLogger(CSVFileUtils.class);
 
     public static <T> void write(T dto, String outputFile, boolean force, Class<?> clz) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         write(Arrays.asList(dto), outputFile, force, clz);
@@ -64,7 +66,6 @@ public class CSVFileUtils {
             for (int i = 0; i < contentList.size(); i++) {
                 writer.writeRecord(CustomCollectionUtils.toArrayStr(contentList.get(i)), false);
             }
-
             writer.close();
 
         } catch (Throwable e) {
@@ -124,6 +125,34 @@ public class CSVFileUtils {
         FieldOrder order = modelClz.getAnnotation(FieldOrder.class);
         List<String> orderList = CustomCollectionUtils.toList(order.value());
         return orderList;
+    }
+
+    public static <T> List<T> read(String filePath, Class<T> clz) throws IOException {
+
+        if (!new File(filePath).exists()) {
+            return null;
+        }
+
+        CsvReader reader = null;
+        try {
+            reader = new CsvReader(filePath);
+
+            reader.readHeaders();
+            reader.readRecord();
+
+            List<String> headerList = CustomCollectionUtils.toList(reader.getHeaders());
+            List<String> rowList = CustomCollectionUtils.toList(reader.getValues());
+
+            System.out.println(headerList);
+            System.out.println(rowList);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw e;
+        } finally {
+            reader.close();
+        }
+        return null;
     }
 
 }

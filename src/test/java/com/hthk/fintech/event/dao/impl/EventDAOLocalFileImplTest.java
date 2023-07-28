@@ -7,7 +7,6 @@ import com.hthk.fintech.model.event.EventTrade;
 import com.hthk.fintech.test.EventTradeTest;
 import org.junit.Test;
 
-import static com.hthk.fintech.enumration.EventGroupEnum.TRADE;
 import static com.hthk.fintech.enumration.EventTypeTradeEnum.REFRESH;
 
 public class EventDAOLocalFileImplTest extends EventTradeTest {
@@ -29,8 +28,8 @@ public class EventDAOLocalFileImplTest extends EventTradeTest {
         dao.save(event);
     }
 
-    //    @Test
-    public void testSaveEvent_TRADE_REFRESH_CALYPSO2() {
+    @Test
+    public void testSaveEvent_VOL_COMMODITY_0900HKT_READY_CALYPSO() {
 
         event = EventTrade.newInstance(DOMAIN, REFRESH, null, currentTime);
         logYML(event);
