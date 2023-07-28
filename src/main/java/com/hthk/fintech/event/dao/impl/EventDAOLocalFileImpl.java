@@ -77,8 +77,9 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
     private List<IEvent> getByDate(LocalDateTime eventTime) throws AttributeEmptyException {
 
         String eventFilePath = getEventFilePath(eventTime);
-        List<IEvent> eventList = CSVFileUtils.read(eventFilePath, IEvent.class);
-        return get(criteria);
+//        List<IEvent> eventList = CSVFileUtils.read(eventFilePath, IEvent.class);
+//        return get(criteria);
+        return null;
     }
 
     private File getEventFile(LocalDateTime eventTime) {
