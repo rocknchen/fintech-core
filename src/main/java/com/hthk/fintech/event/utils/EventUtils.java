@@ -1,6 +1,5 @@
 package com.hthk.fintech.event.utils;
 
-import com.hthk.common.utils.CSVFileUtils;
 import com.hthk.fintech.enumration.CSVModel;
 import com.hthk.fintech.serialize.ModelDeserializeController;
 import org.slf4j.Logger;
@@ -17,11 +16,11 @@ public class EventUtils {
         Class<? extends ModelDeserializeController> controllerClz = clz.getAnnotation(CSVModel.class).deserializeController();
         try {
             ModelDeserializeController controller = controllerClz.getConstructor().newInstance();
+            return (T) controller.process(headerList, fieldList);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
-        return null;
     }
 
 }

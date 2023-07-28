@@ -6,13 +6,15 @@ import com.hthk.fintech.converter.AttributeStringConverter;
 import com.hthk.fintech.enumration.CSVField;
 import com.hthk.fintech.enumration.FieldOrder;
 import com.hthk.fintech.event.utils.EventUtils;
-import com.hthk.fintech.model.event.IEvent;
 import com.hthk.fintech.model.file.csv.CSVFieldDTO;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -27,23 +29,27 @@ public class CSVFileUtils {
 
     protected final static Logger logger = LoggerFactory.getLogger(CSVFileUtils.class);
 
-    public static <T> void write(T dto, String outputFile, boolean force, Class<?> clz) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        write(Arrays.asList(dto), outputFile, force, clz);
-    }
-
     public static <T> void write(T dto, String outputFile, boolean force) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        write(Arrays.asList(dto), outputFile, force, null);
+        write(dto, outputFile, force, null);
     }
 
-    public static void write(List<?> dtoList, String outputFile, boolean force, Class<?> clz) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public static <T> void write(T dto, String outputFile, boolean force, Class<?> clz) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        writeList(Arrays.asList(dto), outputFile, force, clz);
+    }
+
+    public static void writeList(List<?> dtoList, String outputFile, boolean force) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        writeList(dtoList, outputFile, force, null);
+    }
+
+    public static void writeList(List<?> dtoList, String outputFile, boolean force, Class<?> clz) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         if (force) {
             new File(outputFile).getParentFile().mkdirs();
         }
-        write(dtoList, outputFile, clz);
+        writeDTO(dtoList, outputFile, clz);
     }
 
-    public static void write(List<?> dtoList, String outputFile, Class<?> clz) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public static void writeDTO(List<?> dtoList, String outputFile, Class<?> clz) throws IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         if (dtoList == null || dtoList.size() == 0) {
             return;

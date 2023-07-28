@@ -92,7 +92,7 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
 
     private void writeCSV(List<IEvent> eventList, String eventFilePath) throws PersistenceException {
         try {
-            CSVFileUtils.write(eventList, eventFilePath, true);
+            CSVFileUtils.writeList(eventList, eventFilePath, true, IEvent.class);
         } catch (Exception e) {
             throw new PersistenceException(e.getMessage(), e);
         }
