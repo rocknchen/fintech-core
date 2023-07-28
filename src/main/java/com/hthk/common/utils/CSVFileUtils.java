@@ -5,6 +5,8 @@ import com.csvreader.CsvWriter;
 import com.hthk.fintech.converter.AttributeStringConverter;
 import com.hthk.fintech.enumration.CSVField;
 import com.hthk.fintech.enumration.FieldOrder;
+import com.hthk.fintech.event.utils.EventUtils;
+import com.hthk.fintech.model.event.IEvent;
 import com.hthk.fintech.model.file.csv.CSVFieldDTO;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -133,18 +136,19 @@ public class CSVFileUtils {
             return null;
         }
 
+        List<T> modelList = new ArrayList<>();
         CsvReader reader = null;
         try {
             reader = new CsvReader(filePath);
 
             reader.readHeaders();
-            reader.readRecord();
-
             List<String> headerList = CustomCollectionUtils.toList(reader.getHeaders());
-            List<String> rowList = CustomCollectionUtils.toList(reader.getValues());
 
-            System.out.println(headerList);
-            System.out.println(rowList);
+            while (reader.readRecord()) {
+                List<String> fieldList = CustomCollectionUtils.toList(reader.getValues());
+                T model = EventUtils.deserialize(headerList, fieldList, clz);
+                modelList.add(model);
+            }
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -152,7 +156,7 @@ public class CSVFileUtils {
         } finally {
             reader.close();
         }
-        return null;
+        return modelList;
     }
 
 }
