@@ -32,7 +32,7 @@ public abstract class AbstractService {
     }
 
     protected <T> void logYML(T model, String msg) {
-        logStr(model, LogLevel.INFO, msg);
+        logYML(model, LogLevel.INFO, msg);
     }
 
     protected <T> void logYML(T model, LogLevel level, String msg) {
