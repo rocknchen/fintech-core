@@ -1,6 +1,8 @@
 package com.hthk.fintech.event.service.impl;
 
 import com.hthk.fintech.event.dao.EventDAO;
+import com.hthk.fintech.exception.AttributeEmptyException;
+import com.hthk.fintech.exception.PersistenceException;
 import com.hthk.fintech.log.utils.LogUtils;
 import com.hthk.fintech.model.event.IEvent;
 import com.hthk.fintech.event.service.EventService;
@@ -21,10 +23,10 @@ public class EventServiceDefaultImpl extends AbstractService implements EventSer
     private EventDAO dao;
 
     @Override
-    public void save(IEvent event) {
+    public void save(IEvent event) throws AttributeEmptyException, PersistenceException {
 
         logger.info(LogUtils.wrapStr(KW_SAVE_EVENT), ymlStr(event));
-//        dao.save(event);
+        dao.save(event);
     }
 
 }
