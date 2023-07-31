@@ -4,8 +4,8 @@ import com.hthk.common.exception.ServiceException;
 
 public interface ScheduledTaskManager {
 
-    void start(String reqStr) throws ServiceException;
-
+    default void start(String reqStr) throws ServiceException {
+    }
 
     /**
      * TODO
