@@ -9,6 +9,8 @@ import com.hthk.fintech.model.event.EventTrade;
 import com.hthk.fintech.test.EventTradeTest;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static com.hthk.fintech.enumration.EventSubTypeMarketDataEnum.READY;
 import static com.hthk.fintech.enumration.EventTypeMarketDataEnum.VOL_SURFACE;
 import static com.hthk.fintech.enumration.EventTypeTradeEnum.REFRESH;
