@@ -31,8 +31,6 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
     @Override
     public void save(IEvent event) throws PersistenceException, AttributeEmptyException {
 
-        logYML(event, LogLevel.INFO, KW_SAVE_EVENT);
-
         LocalDateTime eventTime = event.getTime();
         String eventFilePath = getEventFilePath(eventTime);
 
