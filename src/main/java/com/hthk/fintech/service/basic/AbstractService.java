@@ -36,7 +36,7 @@ public abstract class AbstractService {
     }
 
     protected <T> void logYML(T model, LogLevel level, String msg) {
-        String logMsg = StringUtils.hasText(msg) ? msg + "\r\n{}" : "{}";
+        String logMsg = StringUtils.hasText(msg) ? msg + "\r\n{}" : "\r\n{}";
         String yml = JacksonUtils.toYMLPrettyTry(model);
         switch (level) {
             case DEBUG:
