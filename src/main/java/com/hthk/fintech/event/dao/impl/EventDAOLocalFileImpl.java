@@ -36,7 +36,7 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         LocalDateTime eventTime = event.getTime();
         String eventFilePath = getEventFilePath(eventTime);
 
-        String id = UUIDUtils.buildId(event);
+        String id = UUIDUtils.buildId(event, eventTime);
         setId(event, id);
 
         try {
