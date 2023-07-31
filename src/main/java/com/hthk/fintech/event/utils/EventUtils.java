@@ -9,9 +9,12 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Optional;
 
+import static com.hthk.fintech.config.FintechStaticData.DEFAULT_NA_STRING;
+
 public class EventUtils {
 
     protected final static Logger logger = LoggerFactory.getLogger(EventUtils.class);
+
     public static final String BuildKey(IEvent event) {
         return event.getDomain() + "-" + event.getGroup() + "-" + event.getType() + "-" + Optional.ofNullable(event.getSubType()).map(t -> t.name()).orElse(DEFAULT_NA_STRING);
     }

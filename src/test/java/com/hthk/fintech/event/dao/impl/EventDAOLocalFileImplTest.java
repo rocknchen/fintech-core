@@ -3,6 +3,7 @@ package com.hthk.fintech.event.dao.impl;
 import com.hthk.common.utils.UUIDUtils;
 import com.hthk.fintech.enumration.EventTypeMarketDataEnum;
 import com.hthk.fintech.event.dao.EventDAO;
+import com.hthk.fintech.event.utils.EventUtils;
 import com.hthk.fintech.exception.AttributeEmptyException;
 import com.hthk.fintech.exception.PersistenceException;
 import com.hthk.fintech.model.event.EventMarketData;
@@ -31,6 +32,7 @@ public class EventDAOLocalFileImplTest extends EventTradeTest {
     @Test
     public void testSaveEvent_TRADE_REFRESH_CALYPSO() throws PersistenceException, AttributeEmptyException {
 
+        EventUtils.BuildKey()
         UUIDUtils.generate(key, time);
         event = EventTrade.newInstance(DOMAIN, REFRESH, null, currentTime);
         dao.save(event);
