@@ -11,6 +11,7 @@ import com.hthk.fintech.exception.AttributeEmptyException;
 import com.hthk.fintech.exception.PersistenceException;
 import com.hthk.fintech.model.event.EventCriteria;
 import com.hthk.fintech.model.event.IEvent;
+import com.hthk.fintech.model.event.basic.AbstractEvent;
 import com.hthk.fintech.service.basic.AbstractService;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.stereotype.Component;
@@ -66,7 +67,7 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
     private void setId(IEvent event, String id) throws PersistenceException {
 
         try {
-            Method setIdMethod = event.getClass().getDeclaredMethod("setId");
+            Method setIdMethod = AbstractEvent.class.getDeclaredMethod("setId", String.class);
             setIdMethod.invoke(event, id);
         } catch (Exception e) {
             throw new PersistenceException(e.getMessage(), e);

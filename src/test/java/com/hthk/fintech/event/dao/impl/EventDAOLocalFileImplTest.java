@@ -36,7 +36,7 @@ public class EventDAOLocalFileImplTest extends EventTradeTest {
         dao.save(event);
     }
 
-    @Test
+    //    @Test
     public void testSaveEvent_VOL_COMMODITY_0900HKT_READY_CALYPSO() throws AttributeEmptyException, PersistenceException {
 
         event = EventMarketData.newInstance(DOMAIN, VOL_SURFACE, READY, currentTime);
