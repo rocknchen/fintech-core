@@ -1,17 +1,12 @@
 package com.hthk.fintech.event.dao.impl;
 
-import com.hthk.common.utils.UUIDUtils;
-import com.hthk.fintech.enumration.EventTypeMarketDataEnum;
 import com.hthk.fintech.event.dao.EventDAO;
-import com.hthk.fintech.event.utils.EventUtils;
 import com.hthk.fintech.exception.AttributeEmptyException;
 import com.hthk.fintech.exception.PersistenceException;
 import com.hthk.fintech.model.event.EventMarketData;
 import com.hthk.fintech.model.event.EventTrade;
 import com.hthk.fintech.test.EventTradeTest;
 import org.junit.Test;
-
-import java.util.UUID;
 
 import static com.hthk.fintech.enumration.EventSubTypeMarketDataEnum.READY;
 import static com.hthk.fintech.enumration.EventTypeMarketDataEnum.VOL_SURFACE;
