@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.hthk.fintech.config.FintechStaticData.DEFAULT_DATE_TIME_FORMAT;
 import static com.hthk.fintech.config.FintechStaticData.DEFAULT_NA_STRING;
 
 public class UUIDUtils {
@@ -20,7 +21,7 @@ public class UUIDUtils {
                 + event.getGroup() + "-"
                 + event.getType() + "-"
                 + Optional.ofNullable(event.getSubType()).map(t -> t.name()).orElse(DEFAULT_NA_STRING) + "-"
-                + eventTime.format(DateTimeFormatter.BASIC_ISO_DATE);
+                + eventTime.format(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT));
         return UUID.nameUUIDFromBytes(id.getBytes()).toString();
     }
 
