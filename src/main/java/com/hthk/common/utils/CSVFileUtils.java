@@ -123,6 +123,8 @@ public class CSVFileUtils {
 
         System.out.println("modelClz:" + modelClz);
         String methodName = CustomReflectionUtils.getMethodName(fieldName, KW_GET);
+        System.out.println("methodName:" + methodName);
+
         Method getMethod = modelClz.getMethod(methodName);
         CSVField csvField = getMethod.getAnnotation(CSVField.class);
         String header = csvField.header();
