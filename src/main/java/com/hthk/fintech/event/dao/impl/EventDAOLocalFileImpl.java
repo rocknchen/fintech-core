@@ -2,6 +2,7 @@ package com.hthk.fintech.event.dao.impl;
 
 import com.hthk.common.utils.CSVFileUtils;
 import com.hthk.common.utils.LocalDateTimeUtils;
+import com.hthk.common.utils.UUIDUtils;
 import com.hthk.fintech.enumration.DateTimeFormatEnum;
 import com.hthk.fintech.event.dao.EventDAO;
 import com.hthk.fintech.event.utils.DateTimeFormatUtils;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,10 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
 
         LocalDateTime eventTime = event.getTime();
         String eventFilePath = getEventFilePath(eventTime);
+
+        String id = UUIDUtils.buildId(event);
+        setId(event, id);
+
         try {
             appendCSV(event, eventFilePath, eventTime);
         } catch (IOException e) {
@@ -54,6 +60,16 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
         } else {
             List<IEvent> eventList = getAll();
             return filter(eventList, criteria);
+        }
+    }
+
+    private void setId(IEvent event, String id) throws PersistenceException {
+
+        try {
+            Method setIdMethod = event.getClass().getDeclaredMethod("setId");
+            setIdMethod.invoke(event, id);
+        } catch (Exception e) {
+            throw new PersistenceException(e.getMessage(), e);
         }
     }
 
