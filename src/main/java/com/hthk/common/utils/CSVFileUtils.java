@@ -121,6 +121,7 @@ public class CSVFileUtils {
 
     private static CSVFieldDTO convertCSVFieldDTO(Class<?> modelClz, String fieldName) throws NoSuchMethodException {
 
+        System.out.println("modelClz:" + modelClz);
         String methodName = CustomReflectionUtils.getMethodName(fieldName, KW_GET);
         Method getMethod = modelClz.getMethod(methodName);
         CSVField csvField = getMethod.getAnnotation(CSVField.class);
