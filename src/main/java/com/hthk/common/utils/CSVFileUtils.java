@@ -137,7 +137,7 @@ public class CSVFileUtils {
         return orderList;
     }
 
-    public strictfp List<Map<String, String>> read(String srcFile) throws ServiceException {
+    public static List<Map<String, String>> read(String srcFile) throws ServiceException {
         try {
             return FileUtils.readCSVFile(srcFile);
         } catch (IOException e) {
