@@ -1,5 +1,6 @@
 package com.hthk.common.utils;
 
+import com.hthk.fintech.model.event.EventProcessEntity;
 import com.hthk.fintech.model.event.IEvent;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,16 @@ public class UUIDUtils {
                 + event.getGroup() + "-"
                 + event.getType() + "-"
                 + Optional.ofNullable(event.getSubType()).map(t -> t.name()).orElse(DEFAULT_NA_STRING) + "-"
+                + eventTime.format(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT));
+        return UUID.nameUUIDFromBytes(id.getBytes()).toString();
+    }
+
+    public static String buildId(EventProcessEntity entity, LocalDateTime eventTime) {
+
+        if (entity == null) {
+            return null;
+        }
+        String id = entity.getEventId() + "-"
                 + eventTime.format(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT));
         return UUID.nameUUIDFromBytes(id.getBytes()).toString();
     }
