@@ -39,12 +39,19 @@ public class EngineDAOLocalFileImpl extends AbstractService implements EngineDAO
             all = new ArrayList<>();
         }
 
+        List<EventProcessEntity> list = all;
+
         if (criteria == null) {
-            return all;
+            return list;
         }
 
         String eventId = criteria.getEventId();
-        return all.stream().filter(t -> t.getEventId().equals(eventId)).collect(Collectors.toList());
+        list = list.stream().filter(t -> t.getEventId().equals(eventId)).collect(Collectors.toList());
+
+        List<EventProcessStatusEnum> statusList = criteria.getStatusList();
+        list = list.stream().filter(t -> statusList.contains(t.getStatus())).collect(Collectors.toList());
+
+        return list;
     }
 
     @Override
