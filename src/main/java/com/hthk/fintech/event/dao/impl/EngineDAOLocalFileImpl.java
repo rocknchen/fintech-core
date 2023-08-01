@@ -15,6 +15,7 @@ import com.hthk.fintech.model.event.EventProcessEntity;
 import com.hthk.fintech.service.basic.AbstractService;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,12 +32,11 @@ public class EngineDAOLocalFileImpl extends AbstractService implements EngineDAO
     @Override
     public List<EventProcessEntity> get(EngineCriteria criteria) throws AttributeEmptyException, IOException {
 
-        String engineName = criteria.getName();
-        List<EventProcessStatusEnum> statusList = criteria.getStatusList();
+        LocalDateTime currentDate = LocalDateTime.now();
+        List<EventProcessEntity> all = getByDate(currentDate);
 
-        return null;
-//        String engineFilePath =
-//        return getByDate(engineName, statusList);
+        String eventId = criteria.getEventId();
+        return all.stream().filter(t -> t.getEventId().equals(eventId)).collect(Collectors.toList());
     }
 
     @Override
@@ -56,10 +56,19 @@ public class EngineDAOLocalFileImpl extends AbstractService implements EngineDAO
 
     private EventProcessEntity upsert(EventProcessEntity entity, String engineFilePath, LocalDateTime engineUpdateTime) throws IOException, AttributeEmptyException {
 
-        get();
-        String id = UUIDUtils.buildId(entity, engineUpdateTime);
-        entity.setId(id);
-        return appendCSV(entity, engineFilePath, engineUpdateTime);
+        EngineCriteria criteria = new EngineCriteria();
+        criteria.setEventId(entity.getEventId());
+        List<EventProcessEntity> entityPList = get(criteria);
+
+        boolean isExists = !CollectionUtils.isEmpty(entityPList);
+
+        if (isExists) {
+            return entity;
+        } else {
+            String id = UUIDUtils.buildId(entity, engineUpdateTime);
+            entity.setId(id);
+            return appendCSV(entity, engineFilePath, engineUpdateTime);
+        }
     }
 
     private EventProcessEntity appendCSV(EventProcessEntity entity, String engineFilePath, LocalDateTime engineUpdateTime) throws AttributeEmptyException, IOException {
