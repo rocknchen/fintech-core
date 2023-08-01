@@ -20,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,6 +35,9 @@ public class EngineDAOLocalFileImpl extends AbstractService implements EngineDAO
 
         LocalDateTime currentDate = LocalDateTime.now();
         List<EventProcessEntity> all = getByDate(currentDate);
+        if (all == null) {
+            all = new ArrayList<>();
+        }
 
         String eventId = criteria.getEventId();
         return all.stream().filter(t -> t.getEventId().equals(eventId)).collect(Collectors.toList());
