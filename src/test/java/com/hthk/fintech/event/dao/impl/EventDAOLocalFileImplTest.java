@@ -14,8 +14,6 @@ import static com.hthk.fintech.enumration.EventTypeTradeEnum.REFRESH;
 
 public class EventDAOLocalFileImplTest extends EventTradeTest {
 
-    final String DOMAIN = "CALYPSO";
-
     EventDAO dao;
 
     @Override
@@ -27,14 +25,14 @@ public class EventDAOLocalFileImplTest extends EventTradeTest {
     @Test
     public void testSaveEvent_TRADE_REFRESH_CALYPSO() throws PersistenceException, AttributeEmptyException {
 
-        event = EventTrade.newInstance(DOMAIN, REFRESH, null, currentTime);
+        event = EventTrade.newInstance(DOMAIN_CALYPSO, REFRESH, null, currentTime);
         dao.save(event);
     }
 
     @Test
     public void testSaveEvent_VOL_COMMODITY_0900HKT_READY_CALYPSO() throws AttributeEmptyException, PersistenceException {
 
-        event = EventMarketData.newInstance(DOMAIN, VOL_SURFACE, READY, currentTime);
+        event = EventMarketData.newInstance(DOMAIN_CALYPSO, VOL_SURFACE, READY, currentTime);
         dao.save(event);
     }
 
