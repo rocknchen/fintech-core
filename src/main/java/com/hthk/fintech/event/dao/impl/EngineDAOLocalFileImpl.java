@@ -56,6 +56,7 @@ public class EngineDAOLocalFileImpl extends AbstractService implements EngineDAO
 
     private EventProcessEntity upsert(EventProcessEntity entity, String engineFilePath, LocalDateTime engineUpdateTime) throws IOException, AttributeEmptyException {
 
+        get();
         String id = UUIDUtils.buildId(entity, engineUpdateTime);
         entity.setId(id);
         return appendCSV(entity, engineFilePath, engineUpdateTime);
