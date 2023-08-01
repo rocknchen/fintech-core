@@ -15,13 +15,16 @@ import com.hthk.fintech.model.event.basic.AbstractEvent;
 import com.hthk.fintech.service.basic.AbstractService;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.hthk.fintech.config.FintechStaticData.*;
 
@@ -54,12 +57,14 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
     public List<IEvent> get(EventCriteria criteria) throws AttributeEmptyException, IOException {
 
         LocalDateTime eventTime = criteria.getEventTime();
+        List<IEvent> eventList;
         if (eventTime != null) {
-            return getByDate(eventTime);
+            eventList = getByDate(eventTime);
         } else {
-            List<IEvent> eventList = getAll();
-            return filter(eventList, criteria);
+            eventList = getAll();
         }
+        eventList = filter(eventList, criteria);
+        return eventList;
     }
 
     private void setId(IEvent event, String id) throws PersistenceException {
@@ -73,7 +78,20 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
     }
 
     private List<IEvent> filter(List<IEvent> eventList, EventCriteria criteria) {
-        return null;
+
+        List<IEvent> newEventList = eventList;
+
+        String domain = criteria.getDomain();
+        if (StringUtils.hasText(domain)) {
+            newEventList = eventList.stream().filter(t -> t.getDomain().equals(domain)).collect(Collectors.toList());
+        }
+
+        String group = criteria.getGroup().name();
+        if (StringUtils.hasText(group)) {
+            newEventList = eventList.stream().filter(t -> t.getGroup().equals(group)).collect(Collectors.toList());
+        }
+
+        return newEventList;
     }
 
     private List<IEvent> getAll() {
