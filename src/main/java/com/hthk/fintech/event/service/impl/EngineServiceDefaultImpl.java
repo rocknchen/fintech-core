@@ -26,8 +26,8 @@ public class EngineServiceDefaultImpl
     }
 
     @Override
-    public void upsert(List<EventProcessEntity> entityList) {
-
+    public List<EventProcessEntity> upsert(List<EventProcessEntity> entityList) {
+        return null;
     }
 
 }
