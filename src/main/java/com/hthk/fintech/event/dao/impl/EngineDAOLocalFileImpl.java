@@ -33,6 +33,10 @@ public class EngineDAOLocalFileImpl extends AbstractService implements EngineDAO
     @Override
     public List<EventProcessEntity> get(EngineCriteria criteria) throws AttributeEmptyException, IOException {
 
+        if (true) {
+            return null;
+        }
+
         LocalDateTime currentDate = LocalDateTime.now();
         List<EventProcessEntity> all = getByDate(currentDate);
         if (all == null) {
