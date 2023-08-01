@@ -58,6 +58,7 @@ public class CSVFileUtils {
 
         new File(outputFile).getParentFile().mkdirs();
 
+        LockUtils.lock();
         CsvWriter writer = null;
         try {
 
@@ -77,10 +78,12 @@ public class CSVFileUtils {
                 writer.writeRecord(CustomCollectionUtils.toArrayStr(contentList.get(i)), false);
             }
             writer.close();
+            LockUtils.unLock();
 
         } catch (Throwable e) {
             writer.close();
             new File(outputFile).deleteOnExit();
+            LockUtils.unLock();
             throw e;
         }
     }
@@ -154,6 +157,7 @@ public class CSVFileUtils {
         List<T> modelList = new ArrayList<>();
         CsvReader reader = null;
         try {
+            LockUtils.lock();
             reader = new CsvReader(filePath);
 
             reader.readHeaders();
@@ -172,6 +176,7 @@ public class CSVFileUtils {
             throw e;
         } finally {
             reader.close();
+            LockUtils.unLock();
         }
         return modelList;
     }
