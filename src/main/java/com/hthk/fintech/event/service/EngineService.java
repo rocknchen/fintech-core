@@ -11,6 +11,6 @@ public interface EngineService {
 
     List<EventProcessEntity> getEntity(EngineCriteria criteria) throws AttributeEmptyException, IOException;
 
-    List<EventProcessEntity> upsert(List<EventProcessEntity> entityList);
+    List<EventProcessEntity> upsert(List<EventProcessEntity> entityList) throws AttributeEmptyException, IOException;
 
 }

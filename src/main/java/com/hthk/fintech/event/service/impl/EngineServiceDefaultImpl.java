@@ -22,12 +22,14 @@ public class EngineServiceDefaultImpl
 
     @Override
     public List<EventProcessEntity> getEntity(EngineCriteria criteria) throws AttributeEmptyException, IOException {
+
         return dao.get(criteria);
     }
 
     @Override
-    public List<EventProcessEntity> upsert(List<EventProcessEntity> entityList) {
-        return null;
+    public List<EventProcessEntity> upsert(List<EventProcessEntity> entityList) throws AttributeEmptyException, IOException {
+
+        return dao.upsert(entityList);
     }
 
 }

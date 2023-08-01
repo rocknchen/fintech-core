@@ -11,4 +11,6 @@ public interface EngineDAO {
 
     List<EventProcessEntity> get(EngineCriteria criteria) throws AttributeEmptyException, IOException;
 
+    List<EventProcessEntity> upsert(List<EventProcessEntity> entityList) throws AttributeEmptyException, IOException;
+
 }
