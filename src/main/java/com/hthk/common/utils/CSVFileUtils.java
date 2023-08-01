@@ -6,8 +6,10 @@ import com.hthk.fintech.converter.AttributeStringConverter;
 import com.hthk.fintech.enumration.CSVField;
 import com.hthk.fintech.enumration.FieldOrder;
 import com.hthk.fintech.event.utils.EventUtils;
+import com.hthk.fintech.exception.ServiceException;
 import com.hthk.fintech.model.file.csv.CSVFieldDTO;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -134,6 +136,14 @@ public class CSVFileUtils {
         FieldOrder order = modelClz.getAnnotation(FieldOrder.class);
         List<String> orderList = CustomCollectionUtils.toList(order.value());
         return orderList;
+    }
+
+    public strictfp List<Map<String, String>> read(String srcFile) throws ServiceException {
+        try {
+            return FileUtils.readCSVFile(srcFile);
+        } catch (IOException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 
     public static <T> List<T> read(String filePath, Class<T> clz) throws IOException {
