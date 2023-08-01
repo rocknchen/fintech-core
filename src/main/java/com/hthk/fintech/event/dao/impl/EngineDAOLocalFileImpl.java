@@ -72,7 +72,9 @@ public class EngineDAOLocalFileImpl extends AbstractService implements EngineDAO
 
         if (isExists) {
             List<EventProcessEntity> entityList = get(null);
-            writeCSV(entityList, engineFilePath);
+            List<EventProcessEntity> newEntityList = entityList.stream().filter(t -> !t.getEventId().equals(entity.getEventId())).collect(Collectors.toList());
+            newEntityList.add(entity);
+            writeCSV(newEntityList, engineFilePath);
             return entity;
         } else {
             String id = UUIDUtils.buildId(entity, engineUpdateTime);
