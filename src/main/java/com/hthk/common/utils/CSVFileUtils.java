@@ -161,6 +161,7 @@ public class CSVFileUtils {
 
             while (reader.readRecord()) {
                 List<String> fieldList = CustomCollectionUtils.toList(reader.getValues());
+                logger.info("fieldList: \r\n" + fieldList);
                 T model = EventUtils.deserialize(headerList, fieldList, clz);
                 modelList.add(model);
             }
