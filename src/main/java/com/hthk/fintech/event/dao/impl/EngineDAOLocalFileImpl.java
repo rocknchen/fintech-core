@@ -16,6 +16,7 @@ import com.hthk.fintech.service.basic.AbstractService;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,10 +47,14 @@ public class EngineDAOLocalFileImpl extends AbstractService implements EngineDAO
         }
 
         String eventId = criteria.getEventId();
-        list = list.stream().filter(t -> t.getEventId().equals(eventId)).collect(Collectors.toList());
+        if (StringUtils.hasText(eventId)) {
+            list = list.stream().filter(t -> t.getEventId().equals(eventId)).collect(Collectors.toList());
+        }
 
         List<EventProcessStatusEnum> statusList = criteria.getStatusList();
-        list = list.stream().filter(t -> statusList.contains(t.getStatus())).collect(Collectors.toList());
+        if (statusList != null) {
+            list = list.stream().filter(t -> statusList.contains(t.getStatus())).collect(Collectors.toList());
+        }
 
         return list;
     }
