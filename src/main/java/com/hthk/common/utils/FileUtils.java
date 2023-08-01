@@ -11,6 +11,8 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.hthk.fintech.config.FintechStaticData.DEFAULT_FILE_CHARSET_NAME;
+
 public class FileUtils {
 
     public static File copy(

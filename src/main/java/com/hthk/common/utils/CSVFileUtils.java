@@ -9,7 +9,6 @@ import com.hthk.fintech.event.utils.EventUtils;
 import com.hthk.fintech.exception.ServiceException;
 import com.hthk.fintech.model.file.csv.CSVFieldDTO;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
