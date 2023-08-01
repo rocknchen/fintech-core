@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.logging.LogLevel;
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,9 @@ public abstract class AbstractService {
 
     @Autowired
     protected AppConfig appConfig;
+
+    @Autowired
+    protected ApplicationContext appContext;
 
     protected Logger getLogger() {
         return LoggerFactory.getLogger(this.getClass());
