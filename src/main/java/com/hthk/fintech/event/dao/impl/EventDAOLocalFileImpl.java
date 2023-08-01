@@ -88,7 +88,7 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
 
         String group = criteria.getGroup().name();
         if (StringUtils.hasText(group)) {
-            newEventList = eventList.stream().filter(t -> t.getGroup().equals(group)).collect(Collectors.toList());
+            newEventList = eventList.stream().filter(t -> t.getGroup().name().equals(group)).collect(Collectors.toList());
         }
 
         return newEventList;
