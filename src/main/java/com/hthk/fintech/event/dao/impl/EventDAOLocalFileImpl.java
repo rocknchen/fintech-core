@@ -21,8 +21,10 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.hthk.fintech.config.FintechStaticData.*;
@@ -78,7 +80,7 @@ public class EventDAOLocalFileImpl extends AbstractService implements EventDAO {
 
     private List<IEvent> filter(List<IEvent> eventList, EventCriteria criteria) {
 
-        List<IEvent> newEventList = eventList;
+        List<IEvent> newEventList = Optional.ofNullable(eventList).orElse(new ArrayList<>());
 
         String domain = criteria.getDomain();
         if (StringUtils.hasText(domain)) {
