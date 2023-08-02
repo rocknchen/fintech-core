@@ -58,13 +58,8 @@ public class CSVFileUtils {
 
         new File(outputFile).getParentFile().mkdirs();
 
-        LockUtils.lock();
         CsvWriter writer = null;
         try {
-
-            BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile, false));
-            writer = new CsvWriter(bw, ',');
-
             Class<?> modelClz = clz == null ? dtoList.get(0).getClass() : clz;
 
             List<String> fieldList = getFieldList(modelClz);
@@ -73,10 +68,17 @@ public class CSVFileUtils {
             List<String> headerStrList = buildHeaderStrList(fieldList, csvFieldDTOMap);
             List<List<String>> contentList = buildContentList(fieldList, csvFieldDTOMap, dtoList);
 
+            LockUtils.lock();
+            writer = null;
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile, false));
+            writer = new CsvWriter(bw, ',');
+
             writer.writeRecord(CustomCollectionUtils.toArrayStr(headerStrList), false);
             for (int i = 0; i < contentList.size(); i++) {
                 writer.writeRecord(CustomCollectionUtils.toArrayStr(contentList.get(i)), false);
             }
+
             writer.close();
             LockUtils.unLock();
 
