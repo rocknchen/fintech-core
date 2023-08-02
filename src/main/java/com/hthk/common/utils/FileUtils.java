@@ -185,7 +185,7 @@ public class FileUtils {
         return tradeInfoList;
     }
 
-    public <R> List<R> getEntityList(String srcFolder, Class<R> clz) throws ServiceException {
+    public static <R> List<R> getEntityList(String srcFolder, Class<R> clz) throws ServiceException {
 
         File[] files = new File(srcFolder).listFiles();
         if (files == null) {
@@ -204,7 +204,7 @@ public class FileUtils {
         return resultList;
     }
 
-    public <R> R readEntity(File srcFile, Class<R> clz) throws IOException, ServiceException {
+    public static <R> R readEntity(File srcFile, Class<R> clz) throws IOException, ServiceException {
 
         String yml = FileUtils.readResourceAsStr(srcFile, true);
         return JacksonUtils.readYml(yml, clz);
