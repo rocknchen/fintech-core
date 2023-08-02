@@ -1,10 +1,8 @@
 package com.hthk.common.utils;
 
 import com.csvreader.CsvReader;
-import com.hthk.fintech.enumration.Product;
 import com.hthk.fintech.exception.ServiceException;
 import com.hthk.fintech.structure.utils.JacksonUtils;
-import org.springframework.boot.logging.LogLevel;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -16,7 +14,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.hthk.fintech.config.FintechStaticData.DEFAULT_FILE_CHARSET_NAME;
-import static com.hthk.fintech.config.FintechStaticData.DEFAULT_PACKAGE;
 
 public class FileUtils {
 
