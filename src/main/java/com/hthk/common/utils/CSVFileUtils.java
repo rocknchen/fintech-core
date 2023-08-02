@@ -83,7 +83,9 @@ public class CSVFileUtils {
             LockUtils.unLock();
 
         } catch (Throwable e) {
-            writer.close();
+            if (writer != null) {
+                writer.close();
+            }
             new File(outputFile).deleteOnExit();
             LockUtils.unLock();
             throw e;
@@ -165,20 +167,28 @@ public class CSVFileUtils {
             reader.readHeaders();
             List<String> headerList = CustomCollectionUtils.toList(reader.getHeaders());
 
+            List<List<String>> contentList = new ArrayList<>();
             while (reader.readRecord()) {
                 List<String> fieldList = CustomCollectionUtils.toList(reader.getValues());
                 if (fieldList.size() < headerList.size()) {
                     continue;
                 }
-                T model = EventUtils.deserialize(headerList, fieldList, clz);
-                modelList.add(model);
+                contentList.add(fieldList);
             }
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw e;
-        } finally {
             reader.close();
             LockUtils.unLock();
+
+            contentList.forEach(fieldList -> {
+                T model = EventUtils.deserialize(headerList, fieldList, clz);
+                modelList.add(model);
+            });
+        } catch (Exception e) {
+            if (reader != null) {
+                reader.close();
+            }
+            LockUtils.unLock();
+            logger.error(e.getMessage(), e);
+            throw e;
         }
         return modelList;
     }
