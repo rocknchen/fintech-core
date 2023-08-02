@@ -1,7 +1,7 @@
 package com.hthk.common.utils;
 
 import com.csvreader.CsvReader;
-import com.hthk.fintech.exception.ServiceException;
+import com.hthk.common.exception.ServiceException;
 import com.hthk.fintech.structure.utils.JacksonUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
