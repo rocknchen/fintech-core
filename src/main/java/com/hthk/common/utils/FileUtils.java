@@ -2,6 +2,7 @@ package com.hthk.common.utils;
 
 import com.csvreader.CsvReader;
 import com.hthk.common.exception.ServiceException;
+import com.hthk.fintech.service.EntityFileService;
 import com.hthk.fintech.structure.utils.JacksonUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -208,6 +209,16 @@ public class FileUtils {
 
         String yml = FileUtils.readResourceAsStr(srcFile, true);
         return JacksonUtils.readYml(yml, clz);
+    }
+
+    public static <T> void writeOutput(List<T> tradeList, String outputFolder, EntityFileService nameService) {
+
+        tradeList.forEach(t -> {
+            String fileName = nameService.getFileName(t);
+            String filePath = outputFolder + "/" + fileName;
+            String json = JacksonUtils.toJsonPrettyTry(t);
+            FileUtils.build(filePath, json, true);
+        });
     }
 
 }
