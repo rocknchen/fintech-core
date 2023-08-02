@@ -11,6 +11,10 @@ public class LockUtils {
 
     public static void lock() {
 
+        if (true) {
+            return;
+        }
+
         File lockFile = new File(LOCK_FILE);
         synchronized (lock) {
             while (lockFile.exists()) {
@@ -29,6 +33,10 @@ public class LockUtils {
     }
 
     public static void unLock() {
+
+        if (true) {
+            return;
+        }
 
         synchronized (lock) {
             File lockFile = new File(LOCK_FILE);
