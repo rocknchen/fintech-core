@@ -221,4 +221,14 @@ public class FileUtils {
         });
     }
 
+    public static List<String> getAllSubFolderList(File file) {
+        List<String> subFolderList = new ArrayList<>();
+        if (file.isDirectory()) {
+            subFolderList.add(file.getAbsolutePath());
+            subFolderList.addAll(Arrays.stream(file.listFiles()).map(t -> getAllSubFileList(t))
+                    .flatMap(Collection::stream).collect(Collectors.toList()));
+        }
+        return subFolderList;
+    }
+
 }
