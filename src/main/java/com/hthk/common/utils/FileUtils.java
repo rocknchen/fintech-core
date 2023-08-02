@@ -225,7 +225,7 @@ public class FileUtils {
         List<String> subFolderList = new ArrayList<>();
         if (file.isDirectory()) {
             subFolderList.add(file.getAbsolutePath());
-            subFolderList.addAll(Arrays.stream(file.listFiles()).map(t -> getAllSubFileList(t))
+            subFolderList.addAll(Arrays.stream(file.listFiles()).map(t -> getAllSubFolderList(t))
                     .flatMap(Collection::stream).collect(Collectors.toList()));
         }
         return subFolderList;
