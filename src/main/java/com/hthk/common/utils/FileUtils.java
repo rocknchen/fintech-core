@@ -1,6 +1,10 @@
 package com.hthk.common.utils;
 
 import com.csvreader.CsvReader;
+import com.hthk.fintech.enumration.Product;
+import com.hthk.fintech.exception.ServiceException;
+import com.hthk.fintech.structure.utils.JacksonUtils;
+import org.springframework.boot.logging.LogLevel;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -12,6 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.hthk.fintech.config.FintechStaticData.DEFAULT_FILE_CHARSET_NAME;
+import static com.hthk.fintech.config.FintechStaticData.DEFAULT_PACKAGE;
 
 public class FileUtils {
 
@@ -181,6 +186,31 @@ public class FileUtils {
         );
 
         return tradeInfoList;
+    }
+
+    public <R> List<R> getEntityList(String srcFolder, Class<R> clz) throws ServiceException {
+
+        File[] files = new File(srcFolder).listFiles();
+        if (files == null) {
+            return null;
+        }
+        List<File> srcFileList = Arrays.stream(files).collect(Collectors.toList());
+        List<R> resultList = new ArrayList<>();
+        try {
+            for (File file : srcFileList) {
+                R entity = readEntity(file, clz);
+                resultList.add(entity);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+        return resultList;
+    }
+
+    public <R> R readEntity(File srcFile, Class<R> clz) throws IOException, ServiceException {
+
+        String yml = FileUtils.readResourceAsStr(srcFile, true);
+        return JacksonUtils.readYml(yml, clz);
     }
 
 }
