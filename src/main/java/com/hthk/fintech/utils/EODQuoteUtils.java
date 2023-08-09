@@ -2,6 +2,8 @@ package com.hthk.fintech.utils;
 
 import com.hthk.fintech.enumration.InstrumentGroup;
 import com.hthk.fintech.model.marketdata.quote.eod.EODQuote;
+import com.hthk.fintech.model.quote.IInstrumentQuote;
+import com.hthk.fintech.model.quote.ISecurityQuote;
 
 import java.time.LocalDate;
 
