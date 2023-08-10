@@ -12,16 +12,20 @@ public class EODQuoteUtils {
             String name, LocalDate date, IInstrumentQuote quote) {
 
         EODQuote eodQuote = new EODQuote();
-        eodQuote.setQuoteDate(date);
+        eodQuote.setDate(date);
         eodQuote.setInstrument(CustomizedInstrumentUtils.build(name));
-//        eodQuote.set
+        eodQuote.setQuote(quote);
         return eodQuote;
     }
 
     public static EODQuote buildSecurityQuote(
-            String name, LocalDate date, ISecurityQuote quote
-    ) {
-        return null;
+            String name, LocalDate date, ISecurityQuote quote) {
+
+        EODQuote eodQuote = new EODQuote();
+        eodQuote.setDate(date);
+        eodQuote.setInstrument(CustomizedInstrumentUtils.build(name));
+        eodQuote.setQuote(quote);
+        return eodQuote;
     }
 
 }
