@@ -3,15 +3,24 @@ package com.hthk.common.utils;
 import com.hthk.common.exception.ServiceException;
 import com.hthk.fintech.enumration.CSVField;
 import org.apache.commons.collections.map.HashedMap;
+import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CustomReflectionUtils {
+
+    public static <T> Set<Class<? extends T>> filter(
+            String packageFolder,
+            Class<T> clz
+    ) {
+        Reflections reflections = new Reflections(new ConfigurationBuilder().forPackages(packageFolder));
+        Set<Class<? extends T>> supertypeSet = reflections.getSubTypesOf(clz);
+        return supertypeSet;
+    }
 
     public static String getMethodName(String fieldName, String methodStart) {
         return methodStart + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
