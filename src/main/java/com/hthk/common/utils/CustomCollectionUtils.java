@@ -1,6 +1,7 @@
 package com.hthk.common.utils;
 
 import com.hthk.fintech.exception.ServiceException;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.util.CollectionUtils;
 
 import javax.sql.rowset.serial.SerialException;
@@ -8,6 +9,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CustomCollectionUtils {
+
+    public static Map<String, String> paintKey(Map<String, String> origMap, String left, String right) {
+        Map<String, String> resultMap = new HashedMap();
+        origMap.forEach((k, v) -> {
+            String key = left + k + right;
+            resultMap.put(key, v);
+        });
+        return resultMap;
+    }
 
     public static <T> List<T> keyToList(Map<T, ?> beanMap) {
         return beanMap.keySet().stream().collect(Collectors.toList());
