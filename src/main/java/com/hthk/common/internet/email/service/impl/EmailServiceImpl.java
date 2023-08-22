@@ -6,6 +6,7 @@ import com.hthk.common.model.Internet.message.email.MessageEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -70,9 +71,13 @@ public class EmailServiceImpl implements EmailService {
 
         String contentWithSign = content + Optional.ofNullable(sign).map(t -> "<br/>" + sign).orElse("");
 
-        setContent(message, contentWithSign);
-        setContentWithAttachmentList(message, contentWithSign, attachmentList);
+        boolean isSendAttache = !CollectionUtils.isEmpty(attachmentList);
 
+        if (isSendAttache) {
+            setContentWithAttachmentList(message, contentWithSign, attachmentList);
+        } else {
+            setContent(message, contentWithSign);
+        }
         return message;
     }
 
