@@ -27,7 +27,6 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void send(MessageEmail msg) throws ServiceException {
 
-        logger.info("send emails");
         try {
             Session session = buildSession();
 
