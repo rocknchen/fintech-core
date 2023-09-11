@@ -12,13 +12,11 @@ import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -203,7 +201,7 @@ public class CSVFileUtils {
         List<T> modelList = new ArrayList<>();
         CsvReader reader = null;
         try {
-            reader = new CsvReader(filePath);
+            reader = new CsvReader(new FileInputStream(filePath), Charset.forName("GBK"));
 
             reader.readHeaders();
             List<String> headerList = CustomCollectionUtils.toList(reader.getHeaders());
