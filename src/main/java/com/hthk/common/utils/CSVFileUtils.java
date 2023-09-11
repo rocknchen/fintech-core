@@ -16,6 +16,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -181,6 +182,73 @@ public class CSVFileUtils {
             contentList.forEach(fieldList -> {
                 T model = EventUtils.deserialize(headerList, fieldList, clz);
                 modelList.add(model);
+            });
+        } catch (Exception e) {
+            if (reader != null) {
+                reader.close();
+            }
+            LockUtils.unLock();
+            logger.error(e.getMessage(), e);
+            throw e;
+        }
+        return modelList;
+    }
+
+    public static <T> List<T> readCSV(String filePath, Class<T> clz) throws IOException {
+
+        if (!new File(filePath).exists()) {
+            return null;
+        }
+
+        List<T> modelList = new ArrayList<>();
+        CsvReader reader = null;
+        try {
+            reader = new CsvReader(filePath);
+
+            reader.readHeaders();
+            List<String> headerList = CustomCollectionUtils.toList(reader.getHeaders());
+
+            List<List<String>> contentList = new ArrayList<>();
+            while (reader.readRecord()) {
+                List<String> fieldList = CustomCollectionUtils.toList(reader.getValues());
+                if (fieldList.size() < headerList.size()) {
+                    continue;
+                }
+                contentList.add(fieldList);
+            }
+            reader.close();
+
+            Map<String, String> fieldMap = new HashedMap();
+            List<Field> fieldList = Arrays.asList(clz.getDeclaredFields()).stream().collect(Collectors.toList());
+            fieldList.forEach(f -> {
+                CSVField csvField = f.getAnnotation(CSVField.class);
+                String header = csvField.header();
+                fieldMap.put(header, f.getName());
+            });
+
+            List<Method> setMethodList = new ArrayList<>();
+            headerList.forEach(t -> {
+                String fieldName = fieldMap.get(t);
+                String setMethodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                try {
+                    setMethodList.add(clz.getMethod(setMethodName, String.class));
+                } catch (NoSuchMethodException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            contentList.forEach(c -> {
+                List<String> list = c;
+                try {
+                    Object obj = clz.getConstructor(null).newInstance();
+                    for (int i = 0; i < setMethodList.size(); i++) {
+                        Method method = setMethodList.get(i);
+                        method.invoke(obj, list.get(i));
+                    }
+                    modelList.add((T) obj);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             });
         } catch (Exception e) {
             if (reader != null) {
