@@ -13,6 +13,9 @@ public class AppConfig {
     @Value("${local.file.root}")
     private String localFileRootFolder;
 
+    @Value("${spring.application.name}")
+    public String appName;
+
     @Value("${event.folder}")
     private String eventFolder;
 
