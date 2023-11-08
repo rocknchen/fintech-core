@@ -14,7 +14,7 @@ public class AppConfig {
     private String localFileRootFolder;
 
     @Value("${spring.application.name}")
-    public String appName;
+    private String appName;
 
     @Value("${event.folder}")
     private String eventFolder;
@@ -25,5 +25,9 @@ public class AppConfig {
 
     public String getEventFolder() {
         return eventFolder;
+    }
+
+    public String getAppName() {
+        return appName;
     }
 }
