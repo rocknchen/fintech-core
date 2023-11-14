@@ -11,8 +11,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.hthk.fintech.model.web.http.HttpStatusCodeEnum;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -25,17 +23,19 @@ import static com.hthk.fintech.config.FintechStaticData.DEFAULT_DATE_TIME_FORMAT
 
 /**
  * @Author: Rock CHEN
- * @Date: 2023/11/14 15:27
+ * @Date: 2023/11/14 19:00
  */
-@Component("httpSerializeDefaultObjectMapper")
-public class HttpSerializeDefaultObjectMapper extends ObjectMapper {
+@Component
+public class DefaultObjectMapperFactory {
 
-    public HttpSerializeDefaultObjectMapper() {
+    private ObjectMapper objectMapper;
 
-        super();
-        this.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        this.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-        this.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    public DefaultObjectMapperFactory() {
+
+        objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         SimpleModule simpleModule = new SimpleModule()
                 .addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))
@@ -46,7 +46,12 @@ public class HttpSerializeDefaultObjectMapper extends ObjectMapper {
                 .addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))
                 .addSerializer(HttpStatusCodeEnum.class, new HttpStatusCodeEnumSerializer());
 
-        this.registerModule(simpleModule);
+        objectMapper.registerModule(simpleModule);
 
     }
+
+    public ObjectMapper getObjectMapper() {
+        return objectMapper;
+    }
+
 }
