@@ -11,8 +11,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.hthk.fintech.model.web.http.HttpStatusCodeEnum;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -25,12 +23,12 @@ import static com.hthk.fintech.config.FintechStaticData.DEFAULT_DATE_TIME_FORMAT
 
 /**
  * @Author: Rock CHEN
- * @Date: 2023/11/14 15:27
+ * @Date: 2023/11/14 18:40
  */
-@Component("httpSerializeDefaultObjectMapper")
-public class HttpSerializeDefaultObjectMapper extends ObjectMapper {
+@Component("defaultObjectMapper")
+public class DefaultObjectMapper extends ObjectMapper {
 
-    public HttpSerializeDefaultObjectMapper() {
+    public DefaultObjectMapper() {
 
         super();
         this.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
