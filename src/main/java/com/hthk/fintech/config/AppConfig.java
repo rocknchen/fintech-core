@@ -13,6 +13,9 @@ public class AppConfig {
     @Value("${local.file.root}")
     private String localFileRootFolder;
 
+    @Value("${app.version}")
+    public String appVersion;
+
     @Value("${spring.application.name}")
     private String appName;
 
