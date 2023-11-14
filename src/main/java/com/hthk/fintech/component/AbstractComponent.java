@@ -3,6 +3,7 @@ package com.hthk.fintech.component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hthk.fintech.serialize.DefaultObjectMapperFactory;
 import com.hthk.fintech.service.AppInfoService;
+import com.hthk.fintech.service.DataQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
@@ -15,6 +16,9 @@ public abstract class AbstractComponent {
 
     @Resource(name = "basicAppInfoService")
     protected AppInfoService appInfoService;
+
+    @Autowired
+    protected DataQueryService dataQueryService;
 
     @Autowired
     protected DefaultObjectMapperFactory mapperFactory;
