@@ -1,5 +1,6 @@
 package com.hthk.fintech.config;
 
+import com.hthk.fintech.model.data.DataSourceTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,11 +17,25 @@ public class AppConfig {
     @Value("${app.version}")
     public String appVersion;
 
+    @Value("${dataSource.type}")
+    public DataSourceTypeEnum dataSourceType;
+
+    @Value("${dataSource.path}")
+    public String dataSourcePath;
+
     @Value("${spring.application.name}")
     private String appName;
 
     @Value("${event.folder}")
     private String eventFolder;
+
+    public String getDataSourcePath() {
+        return dataSourcePath;
+    }
+
+    public DataSourceTypeEnum getDataSourceType() {
+        return dataSourceType;
+    }
 
     public String getLocalFileRootFolder() {
         return localFileRootFolder;
