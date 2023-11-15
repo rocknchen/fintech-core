@@ -9,6 +9,6 @@ import com.hthk.fintech.model.web.http.HttpRequest;
  */
 public interface DataQueryManagerService {
 
-    <R> R get(HttpRequest<? extends IDataCriteria> request);
+    <R> R process(HttpRequest<? extends IDataCriteria> request);
 
 }
