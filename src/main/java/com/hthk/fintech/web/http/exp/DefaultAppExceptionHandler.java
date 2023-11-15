@@ -1,6 +1,7 @@
 package com.hthk.fintech.web.http.exp;
 
 import com.hthk.fintech.config.AppConfig;
+import com.hthk.fintech.exception.ServiceInternalException;
 import com.hthk.fintech.exception.ServiceInvalidException;
 import com.hthk.fintech.exception.ServiceNotSupportedException;
 import com.hthk.fintech.utils.HttpResponseUtils;
@@ -65,6 +66,17 @@ public class DefaultAppExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleServiceNotSupportedException(ServiceNotSupportedException ex) {
 
         String generalErr = "Not catch ServiceNotSupportedException";
+        logError(ex, isPrintStack, generalErr);
+        String errMsg = StringUtils.hasText(ex.getMessage()) ? ex.getMessage() : generalErr;
+        ResponseEntity<Object> resp = ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON_UTF8).
+                body(HttpResponseUtils.internalError(errMsg));
+        return resp;
+    }
+
+    @ExceptionHandler(ServiceInternalException.class)
+    protected ResponseEntity<Object> handleServiceInternalException(ServiceInternalException ex) {
+
+        String generalErr = "Not catch ServiceInternalException";
         logError(ex, isPrintStack, generalErr);
         String errMsg = StringUtils.hasText(ex.getMessage()) ? ex.getMessage() : generalErr;
         ResponseEntity<Object> resp = ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON_UTF8).

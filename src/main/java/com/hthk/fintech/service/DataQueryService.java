@@ -1,5 +1,6 @@
 package com.hthk.fintech.service;
 
+import com.hthk.fintech.exception.ServiceInternalException;
 import com.hthk.fintech.exception.ServiceNotSupportedException;
 import com.hthk.fintech.model.data.datacenter.query.DataSnapshot;
 import com.hthk.fintech.model.data.datacenter.query.IDataCriteria;
@@ -10,6 +11,6 @@ import com.hthk.fintech.model.data.datacenter.query.IDataCriteria;
  */
 public interface DataQueryService<R, T extends IDataCriteria> {
 
-    R get(DataSnapshot snapshot, T criteria) throws ServiceNotSupportedException;
+    R get(DataSnapshot snapshot, T criteria) throws ServiceNotSupportedException, ServiceInternalException;
 
 }
