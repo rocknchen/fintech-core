@@ -13,7 +13,9 @@ public class DataQueryServiceImpl<R> implements DataQueryService {
 
     @Override
     public R get(HttpRequest request) {
+
         return null;
+
     }
 
 }
