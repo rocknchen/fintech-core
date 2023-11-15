@@ -7,8 +7,8 @@ import com.hthk.fintech.model.data.datacenter.query.IDataCriteria;
  * @Author: Rock CHEN
  * @Date: 2023/11/15 17:11
  */
-public interface DataQueryService<T extends IDataCriteria> {
+public interface DataQueryService<R, T extends IDataCriteria> {
 
-    <R> R get(DataSnapshot snapshot, T criteria);
+    R get(DataSnapshot snapshot, T criteria);
 
 }
