@@ -1,5 +1,6 @@
 package com.hthk.fintech.web.http.exp;
 
+import com.hthk.fintech.exception.ServiceInvalidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
@@ -26,6 +27,15 @@ public class DefaultAppExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleNPE(RuntimeException ex) {
 
         logger.error("Not catch RuntimeException: {}", ex.getMessage(), ex);
+        String errMsg = StringUtils.hasText(ex.getMessage()) ? ex.getMessage() : "Not catch RuntimeException";
+        ResponseEntity<Object> resp = ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON_UTF8).body("test");
+        return resp;
+    }
+
+    @ExceptionHandler(ServiceInvalidException.class)
+    protected ResponseEntity<Object> handleServiceInvalidException(ServiceInvalidException ex) {
+
+        logger.error("Not catch ServiceInvalidException: {}", ex.getMessage(), ex);
         String errMsg = StringUtils.hasText(ex.getMessage()) ? ex.getMessage() : "Not catch RuntimeException";
         ResponseEntity<Object> resp = ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON_UTF8).body("test");
         return resp;

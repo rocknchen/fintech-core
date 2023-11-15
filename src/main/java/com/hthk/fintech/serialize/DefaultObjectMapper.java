@@ -22,19 +22,17 @@ import static com.hthk.fintech.config.FintechStaticData.DEFAULT_DATE_TIME_FORMAT
 
 /**
  * @Author: Rock CHEN
- * @Date: 2023/11/14 19:00
+ * @Date: 2023/11/15 15:56
  */
 @Component
-public class DefaultObjectMapperFactory {
+public class DefaultObjectMapper extends ObjectMapper {
 
-    private ObjectMapper objectMapper;
+    public DefaultObjectMapper() {
 
-    public DefaultObjectMapperFactory() {
-
-        objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        super();
+        this.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        this.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        this.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         SimpleModule simpleModule = new SimpleModule()
                 .addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))
@@ -44,12 +42,8 @@ public class DefaultObjectMapperFactory {
                 .addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)))
                 .addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)));
 
-        objectMapper.registerModule(simpleModule);
+        this.registerModule(simpleModule);
 
-    }
-
-    public ObjectMapper getObjectMapper() {
-        return objectMapper;
     }
 
 }
