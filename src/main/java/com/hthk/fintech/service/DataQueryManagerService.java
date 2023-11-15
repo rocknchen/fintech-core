@@ -7,8 +7,8 @@ import com.hthk.fintech.model.web.http.HttpRequest;
  * @Author: Rock CHEN
  * @Date: 2023/11/14 21:52
  */
-public interface DataQueryService<R> {
+public interface DataQueryManagerService {
 
-    <T extends IDataCriteria> R get(HttpRequest<T> request);
+    <R> R get(HttpRequest<? extends IDataCriteria> request);
 
 }
