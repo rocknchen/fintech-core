@@ -29,6 +29,17 @@ public class AppConfig {
     @Value("${event.folder}")
     private String eventFolder;
 
+    @Value("${logging.controller.exception.printStack:true}")
+    private boolean controllerPrintStack;
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public boolean isControllerPrintStack() {
+        return controllerPrintStack;
+    }
+
     public String getDataSourcePath() {
         return dataSourcePath;
     }

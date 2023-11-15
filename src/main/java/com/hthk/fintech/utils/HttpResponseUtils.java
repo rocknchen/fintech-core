@@ -31,4 +31,10 @@ public class HttpResponseUtils {
         return resp;
     }
 
+    public static HttpResponse internalError(String errMsg) {
+        HttpResponse resp = new HttpResponse(HttpStatusCodeEnum.INTERNAL_ERROR);
+        resp.setMessage(errMsg);
+        return resp;
+    }
+
 }
