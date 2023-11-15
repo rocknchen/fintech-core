@@ -2,6 +2,7 @@ package com.hthk.fintech.web.http.exp;
 
 import com.hthk.fintech.config.AppConfig;
 import com.hthk.fintech.exception.ServiceInvalidException;
+import com.hthk.fintech.exception.ServiceNotSupportedException;
 import com.hthk.fintech.utils.HttpResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +61,18 @@ public class DefaultAppExceptionHandler extends ResponseEntityExceptionHandler {
         return resp;
     }
 
-    private void logError(ServiceInvalidException ex, boolean isPrintStack, String msg) {
+    @ExceptionHandler(ServiceNotSupportedException.class)
+    protected ResponseEntity<Object> handleServiceNotSupportedException(ServiceNotSupportedException ex) {
+
+        String generalErr = "Not catch ServiceNotSupportedException";
+        logError(ex, isPrintStack, generalErr);
+        String errMsg = StringUtils.hasText(ex.getMessage()) ? ex.getMessage() : generalErr;
+        ResponseEntity<Object> resp = ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON_UTF8).
+                body(HttpResponseUtils.internalError(errMsg));
+        return resp;
+    }
+
+    private void logError(Exception ex, boolean isPrintStack, String msg) {
         if (isPrintStack) {
             logger.error(LOG_DEFAULT, msg, ex.getMessage(), ex);
         } else {

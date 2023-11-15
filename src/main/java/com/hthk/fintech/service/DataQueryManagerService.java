@@ -2,6 +2,7 @@ package com.hthk.fintech.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hthk.fintech.exception.ServiceInvalidException;
+import com.hthk.fintech.exception.ServiceNotSupportedException;
 import com.hthk.fintech.model.data.datacenter.query.IDataCriteria;
 import com.hthk.fintech.model.web.http.HttpRequest;
 
@@ -11,6 +12,6 @@ import com.hthk.fintech.model.web.http.HttpRequest;
  */
 public interface DataQueryManagerService {
 
-    <R> R process(HttpRequest<? extends IDataCriteria> request) throws ServiceInvalidException, JsonProcessingException;
+    <R> R process(HttpRequest<? extends IDataCriteria> request) throws ServiceInvalidException, JsonProcessingException, ServiceNotSupportedException;
 
 }
