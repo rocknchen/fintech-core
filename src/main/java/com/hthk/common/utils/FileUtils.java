@@ -11,12 +11,22 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.hthk.fintech.config.FintechStaticData.DEFAULT_FILE_CHARSET_NAME;
 
 public class FileUtils {
+
+    public static LocalDate getFileDate(File file, String format
+    ) {
+        String fileName = file.getName();
+        String simFileName = fileName.substring(0, fileName.lastIndexOf("."));
+        String date = simFileName.substring(simFileName.length() - format.length());
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
+    }
 
     public static File copy(
             File srcFile,
