@@ -1,5 +1,6 @@
 package com.hthk.fintech.service.basic;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hthk.fintech.config.AppConfig;
 import com.hthk.fintech.structure.utils.JacksonUtils;
 import org.slf4j.Logger;
@@ -22,6 +23,9 @@ public abstract class AbstractService {
 
     @Autowired
     protected ApplicationContext appContext;
+
+    @Autowired
+    protected ObjectMapper objectMapper;
 
     protected Logger getLogger() {
         return LoggerFactory.getLogger(this.getClass());
