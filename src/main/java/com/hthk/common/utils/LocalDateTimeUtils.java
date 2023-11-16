@@ -14,4 +14,9 @@ public class LocalDateTimeUtils {
         }
         return time.format(DateTimeFormatter.ofPattern(format));
     }
+
+    public static LocalDateTime getNow() {
+        return LocalDateTime.now();
+    }
+
 }
