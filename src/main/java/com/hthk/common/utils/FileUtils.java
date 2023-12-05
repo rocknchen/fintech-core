@@ -12,6 +12,7 @@ import org.springframework.util.FileCopyUtils;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,6 +27,14 @@ public class FileUtils {
         String simFileName = fileName.substring(0, fileName.lastIndexOf("."));
         String date = simFileName.substring(simFileName.length() - format.length());
         return LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
+    }
+
+    public static LocalDateTime getFileDateTime(File file, String format
+    ) {
+        String fileName = file.getName();
+        String simFileName = fileName.substring(0, fileName.lastIndexOf("."));
+        String dateTime = simFileName.substring(simFileName.length() - format.length());
+        return LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern(format));
     }
 
     public static File copy(
