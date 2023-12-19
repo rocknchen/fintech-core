@@ -8,8 +8,15 @@ import com.hthk.fintech.model.net.network.TelnetResult;
  */
 public class NetUtils {
 
+    /**
+     * TODO
+     *
+     * @param ip
+     * @param port
+     * @return
+     */
     public static TelnetResult telnet(String ip, int port) {
-//        return
+        return null;
     }
 
 }
