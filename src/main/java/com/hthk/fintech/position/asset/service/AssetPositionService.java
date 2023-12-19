@@ -4,10 +4,12 @@ import com.hthk.fintech.model.finance.config.ProductTypeEnum;
 import com.hthk.fintech.model.finance.position.config.PositionConfiguration;
 import com.hthk.fintech.model.finance.position.liquidation.LiquidationInfo;
 import com.hthk.fintech.model.finance.position.liquidation.LiquidationKey;
-import com.hthk.fintech.model.finance.staticdata.Book;
+import com.hthk.fintech.model.finance.trade.ITrade;
 import com.hthk.fintech.model.position.asset.AssetPositionEntity;
+import com.hthk.fintech.trade.rule.IFilterRuleTrade;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,9 +20,9 @@ import java.util.Set;
 public interface AssetPositionService {
 
     AssetPositionEntity build(
-            Set<Book> bookSet,
+            List<ITrade> tradeList,
             boolean isCrossBook,
-            @Nullable Set<ProductTypeEnum> productTypeNotInScopeSet,
+            @Nullable Set<IFilterRuleTrade> filterRuleTradeSet,
             Map<LiquidationKey, LiquidationInfo> liquidationInfoMap,
             Map<ProductTypeEnum, PositionConfiguration> positionConfigMap
     );
