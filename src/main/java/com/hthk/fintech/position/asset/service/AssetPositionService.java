@@ -1,6 +1,15 @@
 package com.hthk.fintech.position.asset.service;
 
+import com.hthk.fintech.model.finance.config.ProductTypeEnum;
+import com.hthk.fintech.model.finance.position.config.PositionConfiguration;
+import com.hthk.fintech.model.finance.position.liquidation.LiquidationInfo;
+import com.hthk.fintech.model.finance.position.liquidation.LiquidationKey;
+import com.hthk.fintech.model.finance.staticdata.Book;
+import com.hthk.fintech.model.position.asset.AssetPositionEntity;
+
 import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author: Rock CHEN
@@ -12,8 +21,8 @@ public interface AssetPositionService {
             Set<Book> bookSet,
             boolean isCrossBook,
             @Nullable Set<ProductTypeEnum> productTypeNotInScopeSet,
-            LiquidationInfoMap<LiquidationKey, LiquidationInfo> liquidationInfoMap,
-            PositionConfigMap<ProductTypeEnum, PositionConfiguration> positionConfigMap
+            Map<LiquidationKey, LiquidationInfo> liquidationInfoMap,
+            Map<ProductTypeEnum, PositionConfiguration> positionConfigMap
     );
 
 }
