@@ -5,8 +5,8 @@ import com.hthk.fintech.model.finance.position.config.PositionConfiguration;
 import com.hthk.fintech.model.finance.position.liquidation.LiquidationInfo;
 import com.hthk.fintech.model.finance.position.liquidation.LiquidationKey;
 import com.hthk.fintech.model.finance.trade.ITrade;
+import com.hthk.fintech.model.finance.trade.criteria.ICriteriaTrade;
 import com.hthk.fintech.model.position.asset.AssetPositionEntity;
-import com.hthk.fintech.trade.rule.IFilterRuleTrade;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -21,8 +21,9 @@ public interface AssetPositionService {
 
     AssetPositionEntity build(
             List<ITrade> tradeList,
+            @Nullable Set<ICriteriaTrade> acceptCriteriaSet,
+            @Nullable Set<ICriteriaTrade> rejectCriteriaSet,
             boolean isCrossBook,
-            @Nullable Set<IFilterRuleTrade> filterRuleTradeSet,
             Map<LiquidationKey, LiquidationInfo> liquidationInfoMap,
             Map<ProductTypeEnum, PositionConfiguration> positionConfigMap
     );
