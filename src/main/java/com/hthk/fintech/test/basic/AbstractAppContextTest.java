@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 import static com.hthk.fintech.config.FintechStaticData.DEFAULT_APP_CONTEXT_FILE;
 
-public abstract class AbstractTest {
+public abstract class AbstractAppContextTest {
 
     protected static ApplicationContext appContext;
 

@@ -1,7 +1,8 @@
 <configuration>
 
-    <property name="appName" value="fintech-core"/>
+    <property name="appName" value="FintechCore"/>
     <property name="LOG_HOME" value="${log_home:-./logs}"/>
+    <property name="APPEND_FILE" value="${append:-true}"/>
 
     <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
 
@@ -19,7 +20,7 @@
             <pattern>[%-5level] %msg%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
+            <level>INFO</level>
         </filter>
     </appender>
 
@@ -32,18 +33,13 @@
         </filter>
     </appender>
 
-    <appender name="fintech_raw"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_HOME}/${appName}_fintech_raw.log</File>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
-        </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/${appName}_fintech_raw.%d{yyyy-MM-dd}.log</FileNamePattern>
-        </rollingPolicy>
-        <layout>
-            <pattern>[%date{HH:mm:ss}] [%-5level] [%logger:%line] --%mdc{client} - %msg%n</pattern>
-        </layout>
+    <appender name="debugFile"
+              class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_HOME}/${appName}_debug.log</file>
+        <append>${APPEND_FILE}</append>
+        <encoder>
+            <pattern>[%date{HH:mm:ss}] [%-5level] %mdc{client} - %msg%n</pattern>
+        </encoder>
     </appender>
 
     <appender name="infoFile"
@@ -60,23 +56,10 @@
         </layout>
     </appender>
 
-    <appender name="debugFile"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_HOME}/${appName}_debug.log</File>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
-        </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/${appName}_debug.%d{yyyy-MM-dd}.log</FileNamePattern>
-        </rollingPolicy>
-        <layout>
-            <pattern>[%date{HH:mm:ss}] [%-5level] [%logger:%line] --%mdc{client} - %msg%n</pattern>
-        </layout>
-    </appender>
-
     <logger name="org.springframework" level="ERROR"/>
     <logger name="org.apache" level="ERROR"/>
     <logger name="com.fintech" level="ERROR"/>
+    <logger name="org.reflections.Reflections" level="ERROR"/>
 
     <root>
         <appender-ref ref="console_simple"/>
