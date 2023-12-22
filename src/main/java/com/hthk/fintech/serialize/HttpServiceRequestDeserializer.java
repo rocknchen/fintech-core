@@ -22,8 +22,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.hthk.fintech.config.FintechStaticData.DEFAULT_PACKAGE;
-import static com.hthk.fintech.config.FintechStaticData.LOG_DEFAULT;
+import static com.hthk.fintech.config.FintechStaticData.*;
 
 /**
  * @Author: Rock CHEN
@@ -52,13 +51,30 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
     @Override
     public HttpServiceRequest<P, C> deserialize(JsonParser parser, DeserializationContext deCont) throws IOException, JacksonException {
 
-        HttpServiceRequest httpServiceRequest = new HttpServiceRequest();
-
         JsonNode jsonTreeRoot = getJsonTreeRoot(parser);
-        IRequestAction<?> action = deserializeAction(jsonTreeRoot);
-        logger.info(LOG_DEFAULT, "action", JacksonUtils.toYMLPrettyTry(action));
 
-        return httpServiceRequest;
+        IRequestAction<?> action = deserializeAction(jsonTreeRoot);
+        RequestDateTime requestDateTime = deserializeDateTime(jsonTreeRoot);
+        RequestEntity requestEntity = deserializeRequestEntity(jsonTreeRoot);
+
+
+        return new HttpServiceRequest(
+                action,
+                requestDateTime,
+                requestEntity,
+                null);
+    }
+
+    private RequestEntity deserializeRequestEntity(JsonNode root) throws JsonProcessingException {
+
+        JsonNode dateTimeNode = root.get("entity");
+        return objectMapper.treeToValue(dateTimeNode, RequestEntity.class);
+    }
+
+    private RequestDateTime deserializeDateTime(JsonNode root) throws JsonProcessingException {
+
+        JsonNode dateTimeNode = root.get("dateTime");
+        return objectMapper.treeToValue(dateTimeNode, RequestDateTime.class);
     }
 
     private IRequestAction<?> deserializeAction(JsonNode root) throws JsonProcessingException {
