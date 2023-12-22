@@ -8,7 +8,10 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hthk.fintech.model.common.Criteria;
+import com.hthk.fintech.model.common.CriteriaKey;
 import com.hthk.fintech.model.web.http.*;
+import com.hthk.fintech.utils.CriteriaKeyUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
@@ -22,6 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.hthk.fintech.config.FintechStaticData.DEFAULT_PACKAGE;
+import static com.hthk.fintech.config.FintechStaticData.LOG_WRAP;
 
 /**
  * @Author: Rock CHEN
@@ -35,15 +39,26 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
 
     private static Map<ActionTypeEnum, Class<?>> actionParamMap;
 
+    private static Map<CriteriaKey, Class<?>> criteriaClzMap;
+
     private ObjectMapper objectMapper = mapperFactory.getObjectMapper();
 
     static {
+
         Reflections reflections = new Reflections(new ConfigurationBuilder().forPackages(DEFAULT_PACKAGE));
+
         Set<Class<?>> supertypeSet = reflections.getTypesAnnotatedWith(HttpRequestParams.class);
         List<Class<?>> dataCriteriaList = supertypeSet.stream().filter(t -> t.getAnnotation(HttpRequestParams.class) != null).collect(Collectors.toList());
         actionParamMap = dataCriteriaList.stream().collect(Collectors.toMap(t -> {
             HttpRequestParams dataCriteria = t.getAnnotation(HttpRequestParams.class);
             return dataCriteria.name();
+        }, Function.identity()));
+
+        Set<Class<?>> criteriaSet = reflections.getTypesAnnotatedWith(Criteria.class);
+        List<Class<?>> criteriaList = criteriaSet.stream().filter(t -> t.getAnnotation(Criteria.class) != null).collect(Collectors.toList());
+        criteriaClzMap = criteriaList.stream().collect(Collectors.toMap(t -> {
+            Criteria dataCriteria = t.getAnnotation(Criteria.class);
+            return CriteriaKeyUtils.build(dataCriteria);
         }, Function.identity()));
     }
 
@@ -56,6 +71,8 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
         RequestDateTime requestDateTime = deserializeDateTime(jsonTreeRoot);
         RequestEntity requestEntity = deserializeRequestEntity(jsonTreeRoot);
         Object criteria = deserializeCriteria(action, requestEntity, jsonTreeRoot);
+
+        logger.info(LOG_WRAP, "CRITERIA_CLASS_MAP", criteriaClzMap);
 
         return new HttpServiceRequest(
                 action,
