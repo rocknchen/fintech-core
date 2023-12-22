@@ -11,6 +11,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.hthk.fintech.model.web.http.HttpRequest;
+import com.hthk.fintech.model.web.http.HttpServiceRequest;
 import com.hthk.fintech.model.web.http.HttpStatusCodeEnum;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +47,8 @@ public class HttpSerializeDefaultObjectMapperFactory {
                 .addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)))
                 .addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))
                 .addSerializer(HttpStatusCodeEnum.class, new HttpStatusCodeEnumSerializer())
-                .addDeserializer(HttpRequest.class, new HttpRequestDeserializer());
+                .addDeserializer(HttpRequest.class, new HttpRequestDeserializer())
+                .addDeserializer(HttpServiceRequest.class, new HttpServiceRequestDeserializer());
 
         objectMapper.registerModule(simpleModule);
 

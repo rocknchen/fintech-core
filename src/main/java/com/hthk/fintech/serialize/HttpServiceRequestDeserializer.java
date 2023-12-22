@@ -2,15 +2,15 @@ package com.hthk.fintech.serialize;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hthk.fintech.model.data.datacenter.query.DataCriteria;
-import com.hthk.fintech.model.data.datacenter.query.IDataCriteria;
-import com.hthk.fintech.model.web.http.HttpRequest;
 import com.hthk.fintech.model.web.http.HttpRequestActionTypeEnum;
 import com.hthk.fintech.model.web.http.HttpRequestParams;
 import com.hthk.fintech.model.web.http.HttpServiceRequest;
+import com.hthk.fintech.model.web.http.IRequestAction;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
@@ -53,7 +53,24 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
     public HttpServiceRequest<P, C> deserialize(JsonParser parser, DeserializationContext deCont) throws IOException, JacksonException {
 
         HttpServiceRequest httpServiceRequest = new HttpServiceRequest();
+
+        JsonNode jsonTreeRoot = getJsonTreeRoot(parser);
+        IRequestAction<?> action = deserializeAction(jsonTreeRoot);
+
         return httpServiceRequest;
+    }
+
+    private IRequestAction<?> deserializeAction(JsonNode root) {
+
+        String actionName = root.get("action").get("name").asText();
+        logger.info("HTTP_REQUEST_ACTION_TYPE: {}", actionName);
+        return null;
+    }
+
+    private JsonNode getJsonTreeRoot(JsonParser parser) throws IOException {
+
+        ObjectCodec codec = parser.getCodec();
+        return codec.readTree(parser);
     }
 
 }
