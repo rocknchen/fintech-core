@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hthk.fintech.model.web.http.*;
-import com.hthk.fintech.structure.utils.JacksonUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
@@ -22,7 +21,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.hthk.fintech.config.FintechStaticData.*;
+import static com.hthk.fintech.config.FintechStaticData.DEFAULT_PACKAGE;
 
 /**
  * @Author: Rock CHEN
@@ -34,7 +33,7 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
 
     private DefaultObjectMapperFactory mapperFactory = new DefaultObjectMapperFactory();
 
-    private static Map<HttpRequestActionTypeEnum, Class<?>> actionParamMap;
+    private static Map<ActionTypeEnum, Class<?>> actionParamMap;
 
     private ObjectMapper objectMapper = mapperFactory.getObjectMapper();
 
@@ -56,13 +55,20 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
         IRequestAction<?> action = deserializeAction(jsonTreeRoot);
         RequestDateTime requestDateTime = deserializeDateTime(jsonTreeRoot);
         RequestEntity requestEntity = deserializeRequestEntity(jsonTreeRoot);
-
+        Object criteria = deserializeCriteria(action, requestEntity, jsonTreeRoot);
 
         return new HttpServiceRequest(
                 action,
                 requestDateTime,
                 requestEntity,
-                null);
+                criteria);
+    }
+
+    private Object deserializeCriteria(IRequestAction<?> action, RequestEntity requestEntity, JsonNode root) {
+
+        JsonNode criteriaNode = root.get("criteria");
+//        return objectMapper.treeToValue(dateTimeNode, RequestEntity.class);
+        return null;
     }
 
     private RequestEntity deserializeRequestEntity(JsonNode root) throws JsonProcessingException {
@@ -80,7 +86,7 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
     private IRequestAction<?> deserializeAction(JsonNode root) throws JsonProcessingException {
 
         String actionName = root.get("action").get("name").asText();
-        HttpRequestActionTypeEnum actionType = HttpRequestActionTypeEnum.valueOf(actionName);
+        ActionTypeEnum actionType = ActionTypeEnum.valueOf(actionName);
         logger.info("HTTP_REQUEST_ACTION_TYPE: {}", actionType);
 
         Class paramsClz = actionParamMap.get(actionType);
