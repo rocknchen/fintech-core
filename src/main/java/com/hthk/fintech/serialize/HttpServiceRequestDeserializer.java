@@ -10,7 +10,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hthk.fintech.model.common.Criteria;
 import com.hthk.fintech.model.common.CriteriaKey;
+import com.hthk.fintech.model.software.app.ApplicationEnum;
 import com.hthk.fintech.model.web.http.*;
+import com.hthk.fintech.service.CriteriaAllocateService;
+import com.hthk.fintech.service.impl.CriteriaAllocateServiceImpl;
 import com.hthk.fintech.utils.CriteriaKeyUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
@@ -39,7 +42,7 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
 
     private static Map<ActionTypeEnum, Class<?>> actionParamMap;
 
-    private static Map<CriteriaKey, Class<?>> criteriaClzMap;
+    CriteriaAllocateService criteriaAllocateService = new CriteriaAllocateServiceImpl();
 
     private ObjectMapper objectMapper = mapperFactory.getObjectMapper();
 
@@ -53,13 +56,6 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
             HttpRequestParams dataCriteria = t.getAnnotation(HttpRequestParams.class);
             return dataCriteria.name();
         }, Function.identity()));
-
-        Set<Class<?>> criteriaSet = reflections.getTypesAnnotatedWith(Criteria.class);
-        List<Class<?>> criteriaList = criteriaSet.stream().filter(t -> t.getAnnotation(Criteria.class) != null).collect(Collectors.toList());
-        criteriaClzMap = criteriaList.stream().collect(Collectors.toMap(t -> {
-            Criteria dataCriteria = t.getAnnotation(Criteria.class);
-            return CriteriaKeyUtils.build(dataCriteria);
-        }, Function.identity()));
     }
 
     @Override
@@ -70,9 +66,7 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
         IRequestAction<?> action = deserializeAction(jsonTreeRoot);
         RequestDateTime requestDateTime = deserializeDateTime(jsonTreeRoot);
         RequestEntity requestEntity = deserializeRequestEntity(jsonTreeRoot);
-        Object criteria = deserializeCriteria(action, requestEntity, jsonTreeRoot);
-
-        logger.info(LOG_WRAP, "CRITERIA_CLASS_MAP", criteriaClzMap);
+        Object criteria = criteria = deserializeCriteria(action, requestEntity, jsonTreeRoot);
 
         return new HttpServiceRequest(
                 action,
@@ -81,11 +75,16 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
                 criteria);
     }
 
-    private Object deserializeCriteria(IRequestAction<?> action, RequestEntity requestEntity, JsonNode root) {
+    private Object deserializeCriteria(IRequestAction<?> action, RequestEntity requestEntity, JsonNode root) throws JsonProcessingException {
 
         JsonNode criteriaNode = root.get("criteria");
-//        return objectMapper.treeToValue(dateTimeNode, RequestEntity.class);
-        return null;
+        ApplicationEnum app = getApp(action);
+        Class<?> criteriaClz = criteriaAllocateService.getClz(action.getName(), requestEntity, app);
+        return objectMapper.treeToValue(criteriaNode, criteriaClz);
+    }
+
+    private ApplicationEnum getApp(IRequestAction<?> action) {
+        return action.getParams() instanceof ApplicationSourceParams ? ((ApplicationSourceParams) action.getParams()).getApplicationSource() : null;
     }
 
     private RequestEntity deserializeRequestEntity(JsonNode root) throws JsonProcessingException {
