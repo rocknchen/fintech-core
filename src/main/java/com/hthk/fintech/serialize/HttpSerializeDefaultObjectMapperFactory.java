@@ -11,6 +11,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.hthk.fintech.model.web.http.HttpRequest;
+import com.hthk.fintech.model.web.http.HttpRequestGetParams;
 import com.hthk.fintech.model.web.http.HttpServiceRequest;
 import com.hthk.fintech.model.web.http.HttpStatusCodeEnum;
 import org.springframework.stereotype.Component;
