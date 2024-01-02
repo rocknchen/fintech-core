@@ -17,6 +17,7 @@ import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 
 import java.io.IOException;
 import java.util.List;
@@ -84,6 +85,7 @@ public class HttpRequestDeserializer<T extends IDataCriteria> extends JsonDeseri
         httpRequest.getData().setCriteria(iDataCriteria);
 
         return httpRequest;
+
     }
 
     private Class<T> getIDataCriteriaClz(String sourceName, String entityType) {

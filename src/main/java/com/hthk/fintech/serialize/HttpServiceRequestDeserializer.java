@@ -63,16 +63,22 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
 
         JsonNode jsonTreeRoot = getJsonTreeRoot(parser);
 
-        IRequestAction<?> action = deserializeAction(jsonTreeRoot);
-        RequestDateTime requestDateTime = deserializeDateTime(jsonTreeRoot);
-        RequestEntity requestEntity = deserializeRequestEntity(jsonTreeRoot);
-        Object criteria = deserializeCriteria(action, requestEntity, jsonTreeRoot);
+        try {
+            IRequestAction<?> action = deserializeAction(jsonTreeRoot);
+            RequestDateTime requestDateTime = deserializeDateTime(jsonTreeRoot);
+            RequestEntity requestEntity = deserializeRequestEntity(jsonTreeRoot);
+            Object criteria = deserializeCriteria(action, requestEntity, jsonTreeRoot);
 
-        return new HttpServiceRequest(
-                action,
-                requestDateTime,
-                requestEntity,
-                criteria);
+            return new HttpServiceRequest(
+                    action,
+                    requestDateTime,
+                    requestEntity,
+                    criteria);
+
+        } catch (JsonProcessingException e) {
+            logger.error(e.getMessage(), e);
+            throw e;
+        }
     }
 
     private Object deserializeCriteria(IRequestAction<?> action, RequestEntity requestEntity, JsonNode root) throws JsonProcessingException {

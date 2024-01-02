@@ -85,7 +85,6 @@ public class DefaultObjectMapperFactory {
 
     private void setMinIn(ObjectMapper objectMapper) {
 
-        logger.info("serializerConfigMap:{}", serializerConfigMap);
         serializerConfigMap.forEach((k, v) -> objectMapper.addMixIn(k, v));
     }
 
