@@ -6,6 +6,7 @@ import com.hthk.fintech.model.software.app.ApplicationEnum;
 import com.hthk.fintech.model.web.http.ActionTypeEnum;
 import com.hthk.fintech.model.web.http.RequestEntity;
 import com.hthk.fintech.service.CriteriaAllocateService;
+import com.hthk.fintech.structure.utils.JacksonUtils;
 import com.hthk.fintech.utils.CriteriaKeyUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
@@ -42,7 +43,7 @@ public class CriteriaAllocateServiceImpl implements CriteriaAllocateService {
             return CriteriaKeyUtils.build(dataCriteria);
         }, Function.identity()));
 
-        logger.info(LOG_WRAP, "CRITERIA_CLASS_MAP", criteriaClzMap);
+        logger.info(LOG_WRAP, "CRITERIA_CLASS_MAP", JacksonUtils.toYMLPrettyTry(criteriaClzMap));
     }
 
     /**
