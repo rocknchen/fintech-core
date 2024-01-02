@@ -43,7 +43,7 @@ public class CriteriaAllocateServiceImpl implements CriteriaAllocateService {
             return CriteriaKeyUtils.build(dataCriteria);
         }, Function.identity()));
 
-        logger.info(LOG_WRAP, "CRITERIA_CLASS_MAP", JacksonUtils.toYMLPrettyTry(criteriaClzMap));
+        logger.debug(LOG_WRAP, "CRITERIA_CLASS_MAP", JacksonUtils.toYMLPrettyTry(criteriaClzMap));
     }
 
     /**
@@ -56,6 +56,8 @@ public class CriteriaAllocateServiceImpl implements CriteriaAllocateService {
      */
     @Override
     public Class getClz(ActionTypeEnum action, RequestEntity requestEntity, ApplicationEnum app) {
+
+//        getMatchClzSet(criteriaClzMap, );
 
         return criteriaClzMap.values().iterator().next();
     }
