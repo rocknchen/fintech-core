@@ -62,7 +62,7 @@ public class CriteriaAllocateServiceImpl implements CriteriaAllocateService {
         logger.info(LOG_WRAP, "MATCHED_CRITERIA_CLASS_MAP", JacksonUtils.toYMLPrettyTry(matchClzMap));
 
         CriteriaKey criteriaKey = getTheBest(matchClzMap, action, requestEntity, app);
-        logger.info(LOG_DEFAULT, "BEST_CRITERIA_CLASS_MAP", JacksonUtils.toYMLPrettyTry(criteriaKey));
+        logger.info(LOG_DEFAULT, "BEST_CRITERIA_CLASS", JacksonUtils.toYMLPrettyTry(criteriaKey));
         return matchClzMap.get(criteriaKey);
     }
 
