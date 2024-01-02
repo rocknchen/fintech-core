@@ -66,7 +66,7 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
         IRequestAction<?> action = deserializeAction(jsonTreeRoot);
         RequestDateTime requestDateTime = deserializeDateTime(jsonTreeRoot);
         RequestEntity requestEntity = deserializeRequestEntity(jsonTreeRoot);
-        Object criteria = criteria = deserializeCriteria(action, requestEntity, jsonTreeRoot);
+        Object criteria = deserializeCriteria(action, requestEntity, jsonTreeRoot);
 
         return new HttpServiceRequest(
                 action,
