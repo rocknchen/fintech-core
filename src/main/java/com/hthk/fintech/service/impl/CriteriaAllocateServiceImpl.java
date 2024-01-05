@@ -15,6 +15,7 @@ import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,9 +94,9 @@ public class CriteriaAllocateServiceImpl implements CriteriaAllocateService {
 
     private boolean isMatch(Class<?> clz, ActionTypeEnum action, RequestEntity requestEntity, ApplicationEnum app) {
         Criteria criteria = clz.getAnnotation(Criteria.class);
-        ActionTypeEnum criteriaAction = criteria.action();
+        List<ActionTypeEnum> criteriaActionList = Arrays.stream(criteria.actions()).collect(Collectors.toList());
         EntityTypeEnum criteriaType = criteria.type();
-        if (criteriaAction == action && criteriaType == requestEntity.getType()) {
+        if (criteriaActionList.contains(action) && criteriaType == requestEntity.getType()) {
             return true;
         } else {
             return false;
