@@ -15,12 +15,14 @@ import com.hthk.fintech.model.web.http.*;
 import com.hthk.fintech.service.CriteriaAllocateService;
 import com.hthk.fintech.service.impl.CriteriaAllocateServiceImpl;
 import com.hthk.fintech.utils.CriteriaKeyUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,10 +54,12 @@ public class HttpServiceRequestDeserializer<P, C> extends JsonDeserializer<HttpS
 
         Set<Class<?>> supertypeSet = reflections.getTypesAnnotatedWith(HttpRequestParams.class);
         List<Class<?>> dataCriteriaList = supertypeSet.stream().filter(t -> t.getAnnotation(HttpRequestParams.class) != null).collect(Collectors.toList());
-        actionParamMap = dataCriteriaList.stream().collect(Collectors.toMap(t -> {
+        actionParamMap = new HashedMap();
+        dataCriteriaList.stream().forEach(t -> {
             HttpRequestParams dataCriteria = t.getAnnotation(HttpRequestParams.class);
-            return dataCriteria.name();
-        }, Function.identity()));
+            List<ActionTypeEnum> nameList = Arrays.stream(dataCriteria.names()).collect(Collectors.toList());
+            nameList.forEach(name -> actionParamMap.put(name, t));
+        });
     }
 
     @Override
