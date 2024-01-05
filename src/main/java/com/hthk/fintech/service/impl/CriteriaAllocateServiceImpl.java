@@ -15,10 +15,7 @@ import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -40,10 +37,11 @@ public class CriteriaAllocateServiceImpl implements CriteriaAllocateService {
 
         Set<Class<?>> criteriaSet = reflections.getTypesAnnotatedWith(Criteria.class);
         List<Class<?>> criteriaList = criteriaSet.stream().filter(t -> t.getAnnotation(Criteria.class) != null).collect(Collectors.toList());
-        criteriaClzMap = criteriaList.stream().collect(Collectors.toMap(t -> {
+        criteriaClzMap = new HashMap<>();
+        criteriaList.stream().forEach(t -> {
             Criteria dataCriteria = t.getAnnotation(Criteria.class);
-            return CriteriaKeyUtils.build(dataCriteria);
-        }, Function.identity()));
+            CriteriaKeyUtils.build(dataCriteria).forEach(k -> criteriaClzMap.put(k, t));
+        });
 
         logger.debug(LOG_WRAP, "CRITERIA_CLASS_MAP", JacksonUtils.toYMLPrettyTry(criteriaClzMap));
     }
