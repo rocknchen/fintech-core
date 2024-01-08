@@ -49,7 +49,7 @@ public class PropertyOrderGeneratorImpl implements PropertyOrderGenerator {
                 sb.append(name).append("\", \"");
             }
         }
-        sb.delete(sb.length() - 3, sb.length());
+        sb.delete(sb.lastIndexOf(","), sb.length());
         return sb.toString();
     }
 
