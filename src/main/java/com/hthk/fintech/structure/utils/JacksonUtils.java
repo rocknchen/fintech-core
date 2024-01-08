@@ -27,11 +27,11 @@ public class JacksonUtils {
 
     private final static Logger logger = LoggerFactory.getLogger(JacksonUtils.class);
 
-    private static ObjectMapper jsonMapper;
+    public static ObjectMapper jsonMapper;
 
-    private static ObjectMapper xmlMapper;
+    public static ObjectMapper xmlMapper;
 
-    private static ObjectMapper ymlMapper;
+    public static ObjectMapper ymlMapper;
 
     static {
         jsonMapper = buildGenericJson();
