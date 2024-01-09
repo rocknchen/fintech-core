@@ -1,6 +1,5 @@
 package com.hthk.fintech.service.impl;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.hthk.common.utils.FileUtils;
 import com.hthk.fintech.service.PropertyOrderGenerator;
 import org.slf4j.Logger;
@@ -10,9 +9,6 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.hthk.fintech.config.FintechStaticData.LOG_DEFAULT;
-import static com.hthk.fintech.config.FintechStaticData.LOG_WRAP;
 
 /**
  * @Author: Rock CHEN
@@ -56,8 +52,8 @@ public class PropertyOrderGeneratorImpl implements PropertyOrderGenerator {
     private List<String> getNameList(String sourceFile) {
 
         List<String> strList = FileUtils.readResourceAsStrList(new File(sourceFile));
-        List<String> validStrList = strList.stream().filter(t -> t.trim().startsWith("private String"))
-                .map(t -> t.trim().substring("private String".length() + 1, t.trim().length() - 1)).collect(Collectors.toList());
+        List<String> validStrList = strList.stream().filter(t -> t.trim().startsWith("private "))
+                .map(t -> t.trim().substring(t.trim().indexOf(" ", t.trim().indexOf(" ") + 1) + 1, t.trim().length() - 1)).collect(Collectors.toList());
         return validStrList;
     }
 

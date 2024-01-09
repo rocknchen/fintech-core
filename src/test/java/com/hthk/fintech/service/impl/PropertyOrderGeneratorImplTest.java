@@ -15,7 +15,8 @@ public class PropertyOrderGeneratorImplTest {
     public void testGenerate_JACKSON() {
 
         String nameSpace = "JsonPropertyOrder";
-        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/trade/TradeInfo.java";
+//        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/trade/TradeInfo.java";
+        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/position/CashPositionInfo.java";
         int offSet = 3;
 
         String output = generator.process(nameSpace, sourceFile, offSet);
