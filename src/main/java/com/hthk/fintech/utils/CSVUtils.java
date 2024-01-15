@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.hthk.fintech.config.FintechStaticData.DEFAULT_DATE_TIME_FORMAT_FORMATTER;
 import static com.hthk.fintech.config.FintechStaticData.DEFAULT_FILE_CHARSET_NAME;
 
 public class CSVUtils {
@@ -140,7 +141,7 @@ public class CSVUtils {
                 result.add(((LocalDate) method.invoke(obj)).format(DateTimeFormatter.ISO_DATE));
             }
             if (object instanceof LocalDateTime) {
-                result.add(((LocalDateTime) method.invoke(obj)).format(DateTimeFormatter.ISO_DATE_TIME));
+                result.add(((LocalDateTime) method.invoke(obj)).format(DEFAULT_DATE_TIME_FORMAT_FORMATTER));
             }
         }
         return result;
