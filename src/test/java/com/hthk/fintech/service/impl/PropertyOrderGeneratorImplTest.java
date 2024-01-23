@@ -16,11 +16,11 @@ public class PropertyOrderGeneratorImplTest {
     public void testGenerate_JACKSON() {
 
         String nameSpace = "JsonPropertyOrder";
-        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/trade/TradeInfo.java";
+//        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/trade/TradeInfo.java";
 //        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/position/CashPositionInfo.java";
 //        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/staticdata/future/contract/FutureInfo.java";
 
-//        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/trade/product/FutureFXTradeInfo.java";
+        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/trade/product/FutureFXTradeInfo.java";
 //        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/marketdata/quote/eod/EODQuote.java";
         int offSet = 3;
 
