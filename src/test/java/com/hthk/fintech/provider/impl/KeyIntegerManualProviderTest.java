@@ -1,6 +1,5 @@
 package com.hthk.fintech.provider.impl;
 
-import com.hthk.common.utils.KeyIntegerUtilsTest;
 import com.hthk.fintech.model.math.DigitOffset;
 import org.junit.Assert;
 import org.junit.Test;
