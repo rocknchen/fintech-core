@@ -1,5 +1,7 @@
 package com.hthk.fintech.test.basic;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hthk.fintech.structure.utils.JacksonUtils;
 import org.junit.Before;
 import org.slf4j.Logger;
@@ -19,6 +21,8 @@ public abstract class AbstractAppContextTest {
 
     protected LocalDateTime currentTime;
 
+    protected ObjectMapper defaultObjMapper;
+
     static {
         appContext = new ClassPathXmlApplicationContext(DEFAULT_APP_CONTEXT_FILE);
     }
@@ -28,6 +32,11 @@ public abstract class AbstractAppContextTest {
 
         logger = getLogger();
         currentTime = LocalDateTime.now();
+        defaultObjMapper = appContext.getBean(ObjectMapper.class);
+    }
+
+    protected String toJson(Object entity) throws JsonProcessingException {
+        return defaultObjMapper.writerWithDefaultPrettyPrinter().writeValueAsString(entity);
     }
 
     protected void log(String logFormat, String msg1, String msg2) {

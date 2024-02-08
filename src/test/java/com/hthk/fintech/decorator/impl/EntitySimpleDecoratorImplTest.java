@@ -1,5 +1,6 @@
 package com.hthk.fintech.decorator.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hthk.calypsox.model.staticdata.BookInfo;
 import com.hthk.fintech.decorator.EntitySimpleDecorator;
 import com.hthk.fintech.model.decorator.SimpleDecorateParam;
@@ -26,7 +27,7 @@ public class EntitySimpleDecoratorImplTest extends AbstractAppContextTest {
     }
 
     @Test
-    public void testGenerate_10_ID_ONLY() {
+    public void testGenerate_10_ID_ONLY() throws JsonProcessingException {
 
         List<String> valueList = Arrays.asList("name", "activity");
         List<ExtProviderDO> providerDOList = new ArrayList<>();
@@ -37,8 +38,9 @@ public class EntitySimpleDecoratorImplTest extends AbstractAppContextTest {
 
         bookInfo = decorator.process(bookInfo, param);
 
-        logger.info("{}", bookInfo);
+        logger.info("{}", toJson(bookInfo));
     }
+
 
     private SimpleDecorateParam buildParam(List<String> valueList, List<ExtProviderDO> providerDOList) {
         SimpleDecorateParam param = new SimpleDecorateParam();
