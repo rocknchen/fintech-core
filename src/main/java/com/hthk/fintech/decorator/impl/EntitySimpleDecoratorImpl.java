@@ -4,17 +4,28 @@ import com.hthk.fintech.decorator.EntitySimpleDecorator;
 import com.hthk.fintech.model.decorator.SimpleDecorateParam;
 import com.hthk.fintech.model.param.ExtProviderDO;
 import com.hthk.fintech.provider.ExtProvider;
+import com.hthk.fintech.service.basic.AbstractService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+
+import static com.hthk.fintech.config.FintechStaticData.LOG_DEFAULT;
 
 /**
  * @Author: Rock CHEN
  * @Date: 2024/2/8 14:08
  */
 @Component
-public class EntitySimpleDecoratorImpl implements EntitySimpleDecorator {
+public class EntitySimpleDecoratorImpl
+
+        extends AbstractService
+
+        implements EntitySimpleDecorator {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public <R> R process(R entity, SimpleDecorateParam param) {
@@ -23,12 +34,14 @@ public class EntitySimpleDecoratorImpl implements EntitySimpleDecorator {
         List<ExtProviderDO> extProviderDOList = param.getExtProviderList();
 
         if (CollectionUtils.isEmpty(valueList) || CollectionUtils.isEmpty(extProviderDOList)) {
+            logger.info("No decorate action: {} or {} empty", valueList, extProviderDOList);
             return entity;
         }
 
         String connector = param.getConnector();
 
         List<ExtProvider> extProviderList = get(extProviderDOList);
+        logger.info(LOG_DEFAULT, "extProviderList", extProviderList);
 
         return entity;
     }
