@@ -2,18 +2,18 @@ package com.hthk.fintech.provider.impl;
 
 import com.hthk.common.utils.KeyIntegerUtils;
 import com.hthk.fintech.model.math.DigitOffset;
-import com.hthk.fintech.provider.KeyManualProvider;
+import com.hthk.fintech.provider.KeyIntegerManualProvider;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
  * @Author: Rock CHEN
- * @Date: 2024/2/8 11:26
+ * @Date: 2024/2/8 13:52
  */
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-public class KeyIntegerManualProvider implements KeyManualProvider<long[], DigitOffset> {
+public class KeyIntegerManualProviderImpl implements KeyIntegerManualProvider {
 
     private DigitOffset digitOffset;
 

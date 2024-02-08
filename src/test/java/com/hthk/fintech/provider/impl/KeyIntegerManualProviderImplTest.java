@@ -1,18 +1,24 @@
 package com.hthk.fintech.provider.impl;
 
 import com.hthk.fintech.model.math.DigitOffset;
+import com.hthk.fintech.provider.KeyIntegerManualProvider;
+import com.hthk.fintech.test.basic.AbstractAppContextTest;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @Author: Rock CHEN
- * @Date: 2024/2/8 11:30
+ * @Date: 2024/2/8 13:55
  */
-public class KeyIntegerManualProviderTest {
+public class KeyIntegerManualProviderImplTest extends AbstractAppContextTest {
 
-    private final static Logger logger = LoggerFactory.getLogger(KeyIntegerManualProviderTest.class);
+    private KeyIntegerManualProvider provider;
+
+    @Before
+    public void setup() {
+        provider = appContext.getBean(KeyIntegerManualProvider.class);
+    }
 
     @Test
     public void testProvider_OFFSET_1() {
@@ -21,7 +27,6 @@ public class KeyIntegerManualProviderTest {
         int offset = 1;
         int count = 10;
 
-        KeyIntegerManualProvider provider = new KeyIntegerManualProvider();
         DigitOffset digitOffset = new DigitOffset(start, offset);
         provider.init(digitOffset);
 
@@ -40,7 +45,6 @@ public class KeyIntegerManualProviderTest {
         int count = 10;
         int count2 = 2;
 
-        KeyIntegerManualProvider provider = new KeyIntegerManualProvider();
         DigitOffset digitOffset = new DigitOffset(start, offset);
         provider.init(digitOffset);
 
