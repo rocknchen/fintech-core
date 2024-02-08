@@ -1,5 +1,6 @@
 package com.hthk.fintech.decorator.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hthk.fintech.decorator.EntitySimpleDecorator;
 import com.hthk.fintech.model.decorator.SimpleDecorateParam;
 import com.hthk.fintech.model.param.ExtProviderDO;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.hthk.fintech.config.FintechStaticData.LOG_DEFAULT;
 
@@ -47,7 +49,17 @@ public class EntitySimpleDecoratorImpl
     }
 
     private List<ExtProvider> get(List<ExtProviderDO> extProviderDOList) {
-        return null;
+        return extProviderDOList.stream().map(t -> {
+            try {
+                return get(t);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }).collect(Collectors.toList());
+    }
+
+    private ExtProvider get(ExtProviderDO extProviderDO) throws JsonProcessingException {
+        return customObjectMapper.readValue(extProviderDO, ExtProvider.class);
     }
 
 }

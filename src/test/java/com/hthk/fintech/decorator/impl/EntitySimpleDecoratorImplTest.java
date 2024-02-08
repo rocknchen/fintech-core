@@ -37,11 +37,8 @@ public class EntitySimpleDecoratorImplTest extends AbstractAppContextTest {
     @Test
     public void testGenerate_1() throws JsonProcessingException {
 
-        List<String> valueList = Arrays.asList("name", "activity");
-        List<ExtProviderDO> providerDOList = new ArrayList<>();
-        providerDOList.add(buildStringSimple("TEST"));
-
-        logger.debug(LOG_WRAP, "extProviderDOList", toJson(providerDOList));
+        List<String> valueList = getValueList();
+        List<ExtProviderDO> providerDOList = getExtProviderDOS();
 
         BookInfo bookInfo = buildBasic1();
         SimpleDecorateParam param = buildParam(valueList, providerDOList);
@@ -49,6 +46,18 @@ public class EntitySimpleDecoratorImplTest extends AbstractAppContextTest {
         bookInfo = decorator.process(bookInfo, param);
 
         logger.info("{}", toJson(bookInfo));
+    }
+
+    private List<String> getValueList() {
+        List<String> valueList = Arrays.asList("name", "activity");
+        return valueList;
+    }
+
+    private List<ExtProviderDO> getExtProviderDOS() throws JsonProcessingException {
+        List<ExtProviderDO> providerDOList = new ArrayList<>();
+        providerDOList.add(buildStringSimple("TEST"));
+        logger.debug(LOG_WRAP, "extProviderDOList", toJson(providerDOList));
+        return providerDOList;
     }
 
     private ExtProviderDO buildIntegerSimple(long start, int offSet) {

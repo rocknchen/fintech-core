@@ -8,13 +8,10 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hthk.fintech.model.common.Criteria;
-import com.hthk.fintech.model.common.CriteriaKey;
 import com.hthk.fintech.model.software.app.ApplicationEnum;
 import com.hthk.fintech.model.web.http.*;
 import com.hthk.fintech.service.CriteriaAllocateService;
 import com.hthk.fintech.service.impl.CriteriaAllocateServiceImpl;
-import com.hthk.fintech.utils.CriteriaKeyUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
@@ -26,11 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.hthk.fintech.config.FintechStaticData.DEFAULT_PACKAGE;
-import static com.hthk.fintech.config.FintechStaticData.LOG_WRAP;
 
 /**
  * @Author: Rock CHEN

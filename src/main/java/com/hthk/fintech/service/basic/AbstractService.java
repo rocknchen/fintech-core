@@ -2,6 +2,7 @@ package com.hthk.fintech.service.basic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hthk.fintech.config.AppConfig;
+import com.hthk.fintech.serialize.CustomObjectMapper;
 import com.hthk.fintech.structure.utils.JacksonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,9 @@ public abstract class AbstractService {
 
     @Autowired
     protected ObjectMapper objectMapper;
+
+    @Autowired
+    protected CustomObjectMapper customObjectMapper;
 
     protected Logger getLogger() {
         return LoggerFactory.getLogger(this.getClass());
