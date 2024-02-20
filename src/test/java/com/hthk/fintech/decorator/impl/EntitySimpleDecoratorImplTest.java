@@ -1,10 +1,10 @@
 package com.hthk.fintech.decorator.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.hthk.calypsox.model.staticdata.BookInfo;
 import com.hthk.fintech.decorator.EntitySimpleDecorator;
 import com.hthk.fintech.model.decorator.SimpleDecorateParam;
 import com.hthk.fintech.model.param.ExtProviderDO;
+import com.hthk.fintech.model.staticdata.BookInfo;
 import com.hthk.fintech.test.basic.AbstractAppContextTest;
 import com.hthk.fintech.utils.ExtProviderDOUtils;
 import org.junit.Before;
@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.hthk.fintech.config.FintechStaticData.LOG_DEFAULT;
 import static com.hthk.fintech.config.FintechStaticData.LOG_WRAP;
 
 /**
