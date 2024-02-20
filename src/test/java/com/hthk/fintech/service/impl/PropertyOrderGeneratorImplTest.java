@@ -1,6 +1,5 @@
 package com.hthk.fintech.service.impl;
 
-import com.hthk.fintech.enumration.FieldOrder;
 import com.hthk.fintech.service.PropertyOrderGenerator;
 import org.junit.Test;
 
@@ -32,7 +31,8 @@ public class PropertyOrderGeneratorImplTest {
     public void testGenerate_FieldOrder() {
 
         String nameSpace = "FieldOrder";
-        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/fintech-model/src/main/java/com/hthk/fintech/model/trade/TradeInfo.java";
+//        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/fintech-model/src/main/java/com/hthk/fintech/model/trade/TradeInfo.java";
+        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/fintech-model/src/main/java/com/hthk/fintech/model/staticdata/BookInfo.java";
         int offSet = 3;
 
         String output = generator.process(nameSpace, sourceFile, offSet);
