@@ -32,7 +32,8 @@ public class PropertyOrderGeneratorImplTest {
 
         String nameSpace = "FieldOrder";
 //        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/fintech-model/src/main/java/com/hthk/fintech/model/trade/TradeInfo.java";
-        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/fintech-model/src/main/java/com/hthk/fintech/model/staticdata/BookInfo.java";
+//        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/fintech-model/src/main/java/com/hthk/fintech/model/staticdata/BookInfo.java";
+        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/fintech-model/src/main/java/com/hthk/fintech/model/pricing/TradePricingResultInfo.java";
         int offSet = 3;
 
         String output = generator.process(nameSpace, sourceFile, offSet);
