@@ -15,7 +15,10 @@ public class PropertyOrderGeneratorImplTest {
     public void testGenerate_JACKSON() {
 
         String nameSpace = "JsonPropertyOrder";
-        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/trade/TradeInfo.java";
+//        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/trade/TradeInfo.java";
+
+        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/staticdata/fxrate/definition/FXRateResetDefinitionInfo.java";
+
 //        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/position/CashPositionInfo.java";
 //        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/staticdata/future/contract/FutureInfo.java";
 
@@ -32,8 +35,11 @@ public class PropertyOrderGeneratorImplTest {
 
         String nameSpace = "FieldOrder";
 //        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/fintech-model/src/main/java/com/hthk/fintech/model/trade/TradeInfo.java";
-        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/fintech-model/src/main/java/com/hthk/fintech/model/staticdata/BookInfoVO1.java";
+//        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/fintech-model/src/main/java/com/hthk/fintech/model/staticdata/BookInfoVO1.java";
 //        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/fintech-model/src/main/java/com/hthk/fintech/model/pricing/TradePricingResultInfo.java";
+
+        String sourceFile = "C:/Rock/Datas/IT/DEV/ws/WorkSpaceIDEAHTSFICC/calypso-model/src/main/java/com/hthk/calypsox/model/staticdata/fxrate/definition/FXRateResetDefinitionInfo.java";
+
         int offSet = 3;
 
         String output = generator.process(nameSpace, sourceFile, offSet);
