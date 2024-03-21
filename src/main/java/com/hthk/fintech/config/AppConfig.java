@@ -32,6 +32,13 @@ public class AppConfig {
     @Value("${logging.controller.exception.printStack:true}")
     private boolean controllerPrintStack;
 
+    @Value("${tmpFolder:null}")
+    private String tmpFolder;
+
+    public String getTmpFolder() {
+        return tmpFolder;
+    }
+
     public String getAppVersion() {
         return appVersion;
     }
