@@ -36,6 +36,25 @@ public class SFTPServiceImpl
     private final static Logger logger = LoggerFactory.getLogger(SFTPServiceImpl.class);
 
     @Override
+    public String download(FTPConnection connection, String folder, String name, String tmpFolder) throws ServiceInternalException {
+
+        String remoteFile = folder + "/" + name;
+        String localFile = tmpFolder + "/" + name;
+
+        try {
+            Session jSchSession = connection.getSession();
+            ChannelSftp chSftp = (ChannelSftp) jSchSession.openChannel("sftp");
+            chSftp.connect();
+            chSftp.setFilenameEncoding("UTF-8");
+            chSftp.get(remoteFile, localFile);
+            chSftp.disconnect();
+            return localFile;
+        } catch (Exception e) {
+            throw new ServiceInternalException(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public List<String> list(FTPConnection connection, String changeFolder) throws ServiceInternalException {
 
         try {
@@ -45,6 +64,7 @@ public class SFTPServiceImpl
             chSftp.setFilenameEncoding("UTF-8");
             Vector vector = chSftp.ls(changeFolder);
             List<String> fileName = getNameList(vector);
+            chSftp.disconnect();
             return fileName;
         } catch (Exception e) {
             throw new ServiceInternalException(e.getMessage(), e);

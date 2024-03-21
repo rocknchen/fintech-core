@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +34,21 @@ public class FTPServiceImpl
         implements FTPService, FTPClientService {
 
     private final static Logger logger = LoggerFactory.getLogger(FTPServiceImpl.class);
+
+    @Override
+    public String download(FTPConnection connection, String folder, String name, String tmpFolder) throws IOException {
+
+        FTPClient client = connection.getFtpClient();
+
+        String remoteFile = folder + "/" + name;
+        String localFile = tmpFolder + "/" + name;
+
+        FileOutputStream fos = new FileOutputStream(localFile);
+        client.retrieveFile(remoteFile, fos);
+        fos.close();
+
+        return localFile;
+    }
 
     @Override
     public List<String> list(FTPConnection connection, String changeFolder) throws IOException {
