@@ -52,7 +52,9 @@ public class SFTPServiceImpl
     }
 
     private List<String> getNameList(Vector vector) {
-        return (List<String>) vector.stream().map(t -> ((ChannelSftp.LsEntry) t).getFilename()).collect(Collectors.toList());
+        List<ChannelSftp.LsEntry> entryList = (List<ChannelSftp.LsEntry>) vector.stream().collect(Collectors.toList());
+        List<ChannelSftp.LsEntry> fileList = entryList.stream().filter(t -> !t.getAttrs().isDir()).collect(Collectors.toList());
+        return fileList.stream().map(t -> t.getFilename()).collect(Collectors.toList());
     }
 
     @Override
