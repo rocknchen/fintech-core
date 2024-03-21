@@ -122,7 +122,7 @@ public class SFTPServiceImpl
         config.put("StrictHostKeyChecking", "no");
         jSchSession.setConfig(config);
 
-        jSchSession.setTimeout(3000);
+        jSchSession.setTimeout(30000);
 
         try {
             jSchSession.connect();
