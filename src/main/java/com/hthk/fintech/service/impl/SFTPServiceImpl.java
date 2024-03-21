@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +36,26 @@ public class SFTPServiceImpl
         implements SFTPService, FTPClientService {
 
     private final static Logger logger = LoggerFactory.getLogger(SFTPServiceImpl.class);
+
+    @Override
+    public void upload(FTPConnection connection, String folder, String fileInTmp) throws ServiceInternalException {
+
+        String remoteFileName = new File(fileInTmp).getName();
+
+        try {
+            Session jSchSession = connection.getSession();
+            ChannelSftp chSftp = (ChannelSftp) jSchSession.openChannel("sftp");
+            chSftp.connect();
+            chSftp.setFilenameEncoding("UTF-8");
+            chSftp.cd(folder);
+            FileInputStream fis = new FileInputStream(fileInTmp);
+            chSftp.put(fis, remoteFileName);
+            fis.close();
+            chSftp.disconnect();
+        } catch (Exception e) {
+            throw new ServiceInternalException(e.getMessage(), e);
+        }
+    }
 
     @Override
     public String download(FTPConnection connection, String folder, String name, String tmpFolder) throws ServiceInternalException {

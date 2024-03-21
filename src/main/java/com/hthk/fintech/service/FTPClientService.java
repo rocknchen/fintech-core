@@ -19,4 +19,6 @@ public interface FTPClientService {
     List<String> list(FTPConnection connection, String changeFolder) throws ServiceInternalException, IOException;
 
     String download(FTPConnection connection, String folder, String name, String tmpFolder) throws IOException, ServiceInternalException;
+
+    void upload(FTPConnection connection, String folder, String fileInTmp) throws IOException, ServiceInternalException;
 }
