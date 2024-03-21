@@ -19,6 +19,7 @@ import java.util.Properties;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
+import static com.hthk.fintech.config.FintechStaticData.LOG_DEFAULT;
 import static com.hthk.fintech.config.FintechStaticData.LOG_WRAP;
 
 /**
@@ -43,6 +44,7 @@ public class SFTPServiceImpl
             chSftp.connect();
             chSftp.setFilenameEncoding("UTF-8");
             Vector vector = chSftp.ls(changeFolder);
+            logger.info(LOG_DEFAULT, "type", vector.get(0).getClass());
             List<String> list = (List<String>) vector.stream().collect(Collectors.toList());
             return list;
         } catch (Exception e) {
