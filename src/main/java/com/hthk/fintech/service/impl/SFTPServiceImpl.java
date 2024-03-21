@@ -44,12 +44,15 @@ public class SFTPServiceImpl
             chSftp.connect();
             chSftp.setFilenameEncoding("UTF-8");
             Vector vector = chSftp.ls(changeFolder);
-            logger.info(LOG_DEFAULT, "type", vector.get(0).getClass());
-            List<String> list = (List<String>) vector.stream().collect(Collectors.toList());
-            return list;
+            List<String> fileName = getNameList(vector);
+            return fileName;
         } catch (Exception e) {
             throw new ServiceInternalException(e.getMessage(), e);
         }
+    }
+
+    private List<String> getNameList(Vector vector) {
+        return (List<String>) vector.stream().map(t -> ((ChannelSftp.LsEntry) t).getFilename()).collect(Collectors.toList());
     }
 
     @Override
