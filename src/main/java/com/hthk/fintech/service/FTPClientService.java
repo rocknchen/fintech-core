@@ -16,6 +16,6 @@ public interface FTPClientService {
 
     FTPConnection connect(FTPSource ftpSource) throws IOException, ServiceInternalException, JSchException;
 
-    List<String> list(FTPConnection connection, String changeFolder) throws ServiceInternalException;
+    List<String> list(FTPConnection connection, String changeFolder) throws ServiceInternalException, IOException;
 
 }

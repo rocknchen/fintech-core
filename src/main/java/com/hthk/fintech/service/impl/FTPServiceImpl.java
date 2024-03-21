@@ -7,6 +7,7 @@ import com.hthk.fintech.model.net.ftp.FTPSource;
 import com.hthk.fintech.service.FTPClientService;
 import com.hthk.fintech.service.FTPService;
 import com.hthk.fintech.service.basic.AbstractConnectionService;
+import com.jcraft.jsch.Session;
 import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +16,10 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @Author: Rock CHEN
@@ -32,8 +35,13 @@ public class FTPServiceImpl
     private final static Logger logger = LoggerFactory.getLogger(FTPServiceImpl.class);
 
     @Override
-    public List<String> list(FTPConnection connection, String changeFolder) {
-        return null;
+    public List<String> list(FTPConnection connection, String changeFolder) throws IOException {
+
+        FTPClient client = connection.getFtpClient();
+        client.changeWorkingDirectory(changeFolder);
+        return Arrays.stream(client.listFiles()).filter(t -> t.isFile())
+                .collect(Collectors.toList()).stream()
+                .map(t -> t.getName()).collect(Collectors.toList());
     }
 
     @Override
