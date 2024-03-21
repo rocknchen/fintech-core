@@ -2,11 +2,15 @@ package com.hthk.common.utils;
 
 import com.csvreader.CsvReader;
 import com.hthk.common.exception.ServiceException;
+import com.hthk.fintech.action.FileMigrateMainEntry;
 import com.hthk.fintech.service.EntityFileService;
 import com.hthk.fintech.structure.utils.JacksonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.*;
@@ -20,6 +24,8 @@ import java.util.stream.Collectors;
 import static com.hthk.fintech.config.FintechStaticData.DEFAULT_FILE_CHARSET_NAME;
 
 public class FileUtils {
+
+    private final static Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
     public static LocalDate getFileDate(File file, String format
     ) {
@@ -248,6 +254,43 @@ public class FileUtils {
                     .flatMap(Collection::stream).collect(Collectors.toList()));
         }
         return subFolderList;
+    }
+
+    public static void move(String srcFolder, String destFolder, int updateSecOffset) {
+
+        List<String> srcFilePathList = FileUtils.getAllSubFileList(new File(srcFolder));
+        List<File> srcFileList = srcFilePathList.stream().map(t -> new File(t)).collect(Collectors.toList());
+        List<File> filterList = filter(srcFileList, updateSecOffset);
+
+        if (CollectionUtils.isEmpty(filterList)) {
+            return;
+        }
+        filterList.forEach(t -> {
+            try {
+                move(t, destFolder);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        for (File file : filterList) {
+            file.delete();
+            boolean deleteDone = file.delete();
+            logger.info("{} {}", file.getName(), deleteDone);
+        }
+    }
+
+    private static void move(File file, String destFolder) throws FileNotFoundException {
+        copy(file, destFolder, true);
+    }
+
+    private static List<File> filter(List<File> srcFileList, long updateSecOffset) {
+
+        LocalDateTime current = LocalDateTime.now();
+        final LocalDateTime offSetDateTime = current.minusSeconds(updateSecOffset);
+
+        return srcFileList.stream().filter(t ->
+                LocalDateTimeUtils.parse(new Date(t.lastModified())).compareTo(offSetDateTime) < 0
+        ).collect(Collectors.toList());
     }
 
 }
