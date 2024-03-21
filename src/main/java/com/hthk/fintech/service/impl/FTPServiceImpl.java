@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,6 +30,11 @@ public class FTPServiceImpl
         implements FTPService, FTPClientService {
 
     private final static Logger logger = LoggerFactory.getLogger(FTPServiceImpl.class);
+
+    @Override
+    public List<String> list(FTPConnection connection, String changeFolder) {
+        return null;
+    }
 
     @Override
     public FTPConnection connect(FTPSource ftpSource) throws IOException, ServiceInternalException {

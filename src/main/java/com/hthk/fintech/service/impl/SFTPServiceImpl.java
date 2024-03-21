@@ -7,14 +7,19 @@ import com.hthk.fintech.model.net.ftp.FTPSource;
 import com.hthk.fintech.service.FTPClientService;
 import com.hthk.fintech.service.SFTPService;
 import com.hthk.fintech.service.basic.AbstractConnectionService;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
+import com.jcraft.jsch.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.Vector;
+import java.util.stream.Collectors;
+
+import static com.hthk.fintech.config.FintechStaticData.LOG_WRAP;
 
 /**
  * @Author: Rock CHEN
@@ -26,6 +31,26 @@ public class SFTPServiceImpl
         extends AbstractConnectionService
 
         implements SFTPService, FTPClientService {
+
+    private final static Logger logger = LoggerFactory.getLogger(SFTPServiceImpl.class);
+
+    @Override
+    public List<String> list(FTPConnection connection, String changeFolder) throws ServiceInternalException {
+
+        try {
+            Session jSchSession = connection.getSession();
+            ChannelSftp chSftp = (ChannelSftp) jSchSession.openChannel("sftp");
+            chSftp.connect();
+            chSftp.setFilenameEncoding("UTF-8");
+            Vector vector = chSftp.ls(changeFolder);
+            List<String> list = (List<String>) vector.stream().collect(Collectors.toList());
+            logger.info(LOG_WRAP, "list", list);
+        } catch (Exception e) {
+            throw new ServiceInternalException(e.getMessage(), e);
+        }
+
+        return null;
+    }
 
     @Override
     public FTPConnection connect(FTPSource ftpSource) throws IOException, ServiceInternalException, JSchException {
