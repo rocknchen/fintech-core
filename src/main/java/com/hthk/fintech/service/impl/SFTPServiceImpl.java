@@ -38,20 +38,31 @@ public class SFTPServiceImpl
     private final static Logger logger = LoggerFactory.getLogger(SFTPServiceImpl.class);
 
     @Override
+    public void before(FTPConnection connection) throws SftpException, JSchException {
+        Session jSchSession = connection.getSession();
+        ChannelSftp chSftp = (ChannelSftp) jSchSession.openChannel("sftp");
+        chSftp.connect();
+        chSftp.setFilenameEncoding("UTF-8");
+        connection.setChSftp(chSftp);
+    }
+
+    @Override
+    public void after(FTPConnection connection) {
+        ChannelSftp chSftp = connection.getChSftp();
+        chSftp.disconnect();
+    }
+
+    @Override
     public void upload(FTPConnection connection, String folder, String fileInTmp) throws ServiceInternalException {
 
         String remoteFileName = new File(fileInTmp).getName();
+        ChannelSftp chSftp = connection.getChSftp();
 
         try {
-            Session jSchSession = connection.getSession();
-            ChannelSftp chSftp = (ChannelSftp) jSchSession.openChannel("sftp");
-            chSftp.connect();
-            chSftp.setFilenameEncoding("UTF-8");
             chSftp.cd(folder);
             FileInputStream fis = new FileInputStream(fileInTmp);
             chSftp.put(fis, remoteFileName);
             fis.close();
-            chSftp.disconnect();
         } catch (Exception e) {
             throw new ServiceInternalException(e.getMessage(), e);
         }
@@ -62,14 +73,10 @@ public class SFTPServiceImpl
 
         String remoteFile = folder + "/" + name;
         String localFile = tmpFolder + "/" + name;
+        ChannelSftp chSftp = connection.getChSftp();
 
         try {
-            Session jSchSession = connection.getSession();
-            ChannelSftp chSftp = (ChannelSftp) jSchSession.openChannel("sftp");
-            chSftp.connect();
-            chSftp.setFilenameEncoding("UTF-8");
             chSftp.get(remoteFile, localFile);
-            chSftp.disconnect();
             return localFile;
         } catch (Exception e) {
             throw new ServiceInternalException(e.getMessage(), e);
@@ -80,13 +87,9 @@ public class SFTPServiceImpl
     public List<String> list(FTPConnection connection, String changeFolder) throws ServiceInternalException {
 
         try {
-            Session jSchSession = connection.getSession();
-            ChannelSftp chSftp = (ChannelSftp) jSchSession.openChannel("sftp");
-            chSftp.connect();
-            chSftp.setFilenameEncoding("UTF-8");
+            ChannelSftp chSftp = connection.getChSftp();
             Vector vector = chSftp.ls(changeFolder);
             List<String> fileName = getNameList(vector);
-            chSftp.disconnect();
             return fileName;
         } catch (Exception e) {
             throw new ServiceInternalException(e.getMessage(), e);
