@@ -7,6 +7,7 @@ import com.hthk.fintech.model.net.ftp.FTPSource;
 import com.hthk.fintech.service.FTPClientService;
 import com.hthk.fintech.service.SFTPService;
 import com.hthk.fintech.service.basic.AbstractConnectionService;
+import com.hthk.fintech.utils.TimeUtils;
 import com.jcraft.jsch.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +16,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Vector;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.hthk.fintech.config.FintechStaticData.LOG_DEFAULT;
@@ -93,17 +91,39 @@ public class SFTPServiceImpl
         try {
             ChannelSftp chSftp = connection.getChSftp();
             Vector vector = chSftp.ls(changeFolder);
-            List<String> fileName = getNameList(vector);
+            List<String> fileName = getNameList(vector, chSftp, changeFolder);
             return fileName;
         } catch (Exception e) {
             throw new ServiceInternalException(e.getMessage(), e);
         }
     }
 
-    private List<String> getNameList(Vector vector) {
+    /**
+     * TODO
+     *
+     * @param vector
+     * @param chSftp
+     * @param changeFolder
+     * @return
+     */
+    private List<String> getNameList(Vector vector, ChannelSftp chSftp, String changeFolder) {
+        Date todayStart = TimeUtils.getTodayStartDate();
         List<ChannelSftp.LsEntry> entryList = (List<ChannelSftp.LsEntry>) vector.stream().collect(Collectors.toList());
         List<ChannelSftp.LsEntry> fileList = entryList.stream().filter(t -> !t.getAttrs().isDir()).collect(Collectors.toList());
-        return fileList.stream().map(t -> t.getFilename()).collect(Collectors.toList());
+        return fileList.stream().filter(t -> {
+            try {
+                return isToday(t, chSftp, changeFolder, todayStart);
+            } catch (SftpException e) {
+                throw new RuntimeException(e);
+            }
+        }).map(t -> t.getFilename()).collect(Collectors.toList());
+    }
+
+    private boolean isToday(ChannelSftp.LsEntry entry, ChannelSftp chSftp, String changeFolder, Date todayStart) throws SftpException {
+        SftpATTRS attrs = chSftp.lstat(changeFolder + "/" + entry.getFilename());
+        long modificationTime = attrs.getMTime();
+        Date fileModificationDate = new Date(modificationTime);
+        return fileModificationDate.after(todayStart);
     }
 
     @Override

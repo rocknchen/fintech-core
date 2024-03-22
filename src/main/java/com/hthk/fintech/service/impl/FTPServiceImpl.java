@@ -7,6 +7,7 @@ import com.hthk.fintech.model.net.ftp.FTPSource;
 import com.hthk.fintech.service.FTPClientService;
 import com.hthk.fintech.service.FTPService;
 import com.hthk.fintech.service.basic.AbstractConnectionService;
+import com.hthk.fintech.utils.TimeUtils;
 import com.jcraft.jsch.Session;
 import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -81,12 +83,23 @@ public class FTPServiceImpl
         return localFile;
     }
 
+    /**
+     * TODO 修改函数
+     *
+     * @param connection
+     * @param changeFolder
+     * @return
+     * @throws IOException
+     */
     @Override
     public List<String> list(FTPConnection connection, String changeFolder) throws IOException {
 
         FTPClient client = connection.getFtpClient();
         client.changeWorkingDirectory(changeFolder);
-        return Arrays.stream(client.listFiles()).filter(t -> t.isFile())
+        Calendar todayStart = TimeUtils.getTodayStart();
+        return Arrays.stream(client.listFiles())
+                .filter(t -> t.isFile())
+                .filter(t -> t.getTimestamp().after(todayStart))
                 .collect(Collectors.toList()).stream()
                 .map(t -> t.getName()).collect(Collectors.toList());
     }
