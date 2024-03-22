@@ -96,10 +96,10 @@ public class FTPServiceImpl
 
         FTPClient client = connection.getFtpClient();
         client.changeWorkingDirectory(changeFolder);
-        Calendar todayStart = TimeUtils.getTodayStart();
+//        Calendar todayStart = TimeUtils.getTodayStart();
         return Arrays.stream(client.listFiles())
                 .filter(t -> t.isFile())
-                .filter(t -> t.getTimestamp().after(todayStart))
+//                .filter(t -> t.getTimestamp().after(todayStart))
                 .collect(Collectors.toList()).stream()
                 .map(t -> t.getName()).collect(Collectors.toList());
     }
