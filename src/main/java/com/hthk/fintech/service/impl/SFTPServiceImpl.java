@@ -48,8 +48,12 @@ public class SFTPServiceImpl
 
     @Override
     public void after(FTPConnection connection) {
+
         ChannelSftp chSftp = connection.getChSftp();
-        chSftp.disconnect();
+        chSftp.quit();
+
+        Session jSchSession = connection.getSession();
+        jSchSession.disconnect();
     }
 
     @Override

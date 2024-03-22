@@ -36,6 +36,15 @@ public class FTPServiceImpl
     private final static Logger logger = LoggerFactory.getLogger(FTPServiceImpl.class);
 
     @Override
+    public void after(FTPConnection connection) throws IOException {
+
+        FTPClient client = connection.getFtpClient();
+
+        client.logout();
+        client.disconnect();
+    }
+
+    @Override
     public void move(FTPConnection connection, String remoteSource, String remoteDestFolder) throws IOException {
 
         FTPClient client = connection.getFtpClient();

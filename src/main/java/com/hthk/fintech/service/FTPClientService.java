@@ -22,7 +22,7 @@ public interface FTPClientService {
     default void before(FTPConnection connection) throws SftpException, JSchException {
     }
 
-    default void after(FTPConnection connection) {
+    default void after(FTPConnection connection) throws IOException {
     }
 
     default void move(FTPConnection connection, String remoteSource, String remoteDestFolder) throws IOException {
